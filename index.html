@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+  <body style="background-image: url('./space.jpeg'); background-size: cover; background-position: center; margin: 0; height: 100vh; overflow: hidden;">
+    
+    <div id="window1" style="position: absolute; top: 50px; left: 50px; width:500px; border:solid; border-radius:16px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
+      
+      <div id="window1header" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 10px;">
+        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
+        <button onclick="closeWindow('window1')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
+      </div>
+
+      <h1 style="margin:10px; color:darkcyan; font-family:'Courier New', Courier, monospace,sans-serif;">Welcome to Polaris!</h1>
+      <h2 style="margin:10px; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">What is polaris?</h2>
+      <p style="margin:10px; color:rgb(242, 12, 242); font-family: 'Courier New', Courier, monospace,sans-serif;">This is a web based OS based on space theme, made by kai! you can find my info down below. feel free to check it out! hope you like my work :)</p> 
+    </div>
+    
+    
+    <div id="window2" style="position: absolute; top: 50px; left: 600px; width:350px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
+      
+      <div id="window2header" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 10px;">
+        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
+        <button onclick="closeWindow('window2')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
+      </div>
+      <p style="margin:5px; color:rgb(124, 190, 255); font-family: 'Courier New', Courier, monospace,sans-serif;">My links:</p> 
+      <a href="https://stardance.hackclub.com/@kommurisujith36" style="color:whitesmoke; font-family: 'Courier New', Courier, monospace,sans-serif; margin:10px;">Check out my other projects here!</a>
+      <br>
+      <a href="https://en.wikipedia.org/wiki/Polaris" style="color:whitesmoke; font-family: 'Courier New', Courier, monospace,sans-serif; margin:10px;">which star is polaris?</a>
+    </div>
+
+    
+    <div style="position: absolute; bottom:5px; left:10px; right:10px; margin:10px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(5px); background-color: rgba(251, 248, 248, 0.227); color: #fff; border-radius:16px;">
+        <p style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">POLARIS-OS</p>
+        
+        <button onclick="openWindow('window1')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">open welcome window</button>
+        <button onclick="openWindow('window2')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">open links window</button>
+
+        <p style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">-BY KAI</p>
+        <p id="timeElement" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">Time</p>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+
+</html>
