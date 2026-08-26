@@ -49,3 +49,28 @@ function openWindow(windowId) {
 function closeWindow(windowId) {
   document.getElementById(windowId).style.display = "none";
 }
+
+dragElement(document.getElementById("notesWindow"));
+
+let selectedIcon = undefined;
+
+function handleIconTap(element) {
+  if (selectedIcon !== undefined && selectedIcon !== element) {
+    selectedIcon.classList.remove("selected");
+  }
+  
+  if (element.classList.contains("selected")) {
+    element.classList.remove("selected");
+    selectedIcon = undefined;
+  } else {
+    element.classList.add("selected");
+    selectedIcon = element;
+  }
+}
+
+let zIndexCounter = 1;
+
+function bringToFront(element) {
+  zIndexCounter++;
+  element.style.zIndex = zIndexCounter;
+}
