@@ -4,6 +4,7 @@ setInterval(function () {
 
 dragElement(document.getElementById("window1"));
 dragElement(document.getElementById("window2"));
+dragElement(document.getElementById("calcWindow"));
 
 function dragElement(element) {
   var initialX = 0, initialY = 0, currentX = 0, currentY = 0;
@@ -73,4 +74,22 @@ let zIndexCounter = 1;
 function bringToFront(element) {
   zIndexCounter++;
   element.style.zIndex = zIndexCounter;
+}
+
+let display = document.getElementById('calcDisplay')
+
+function calcInput(value) {
+  display.value += value;
+}
+
+function calcClear() {
+  display.value = "";
+}
+
+function calcCalculate() {
+  try {
+    display.value = eval(display.value);
+  } catch (error) {
+    display.value = "error";
+  } 
 }

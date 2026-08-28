@@ -20,7 +20,10 @@
 
       <h1 style="margin:10px; color:darkcyan; font-family:'Courier New', Courier, monospace,sans-serif;">Welcome to Polaris!</h1>
       <h2 style="margin:10px; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">What is polaris?</h2>
-      <p style="margin:10px; color:rgb(242, 12, 242); font-family: 'Courier New', Courier, monospace,sans-serif;">This is a web based OS based on space theme, made by kai! you can find my info down below. feel free to check it out! hope you like my work :)</p> 
+      <p style="margin:10px; color:rgb(242, 12, 242); font-family: 'Courier New', Courier, monospace,sans-serif;">This is a web based OS based on space theme, made by kai! you can find my info down below. feel free to check it out! hope you like my work :)
+        <br>
+        <p style="text-align:right ;color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">-BY KAI</p>
+      </p> 
     </div>
     
     
@@ -41,7 +44,7 @@
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
         <button onclick="closeWindow('notesWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
       </div>
-      <h2 style="margin:10px; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">note taker app</h2>
+      <h2 style="margin:10px; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">Note Taker App</h2>
       <textarea style="width: 90%; height: 200px; background: rgba(0,0,0,0.5); color: white; border: 1px solid violet; font-family: 'Courier New', Courier, monospace; outline: none; padding: 10px; resize: none;"></textarea>
     </div>
     
@@ -49,16 +52,45 @@
         
         <p style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">POLARIS-OS</p>
         
-        <button onclick="openWindow('window1')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">open welcome window</button>
-        <button onclick="openWindow('window2')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">open links window</button>
+        <button onclick="openWindow('window1')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">welcome window</button>
+        <button onclick="openWindow('window2')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">links window</button>
 
-        <div id="desktopApps" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('notesWindow')">
-         <img src="./notepad.jpg" style="width: 48px; height: 48px; border-radius: 12px;">
+        <div id="desktopApps" style="color: white; border: 1px solid rgb(181,126,220); border-radius: 5px;display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('notesWindow')">
+         <img src="./notepad.png" style="width: 20px; height: 20px; border-radius: 8px;">
          <p style="margin: 0; font-size: 14px;">Note Taker</p>
         </div>
-        <p style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">-BY KAI</p>
+        <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('calcWindow')">
+         <img src="./calcicon.png" style="width: 20px; height: 20px; border-radius: 8px;">
+         <p style="margin: 0; font-size: 14px;">Calculator</p> 
+        </div>
         
         <p id="timeElement" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">Time</p>
+    </div>
+
+    <div id="calcWindow" style="display:none; position:absolute; top:200px; left:400px; width:260px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+      <div id="calcWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
+        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
+        <button onclick="closeWindow('calcWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
+      </div>
+      <input type="text" id="calcDisplay" disabled style="width: 90%; height: 40px; margin-bottom: 15px; background: rgba(0,0,0,0.5); color: white; border: 1px solid violet; border-radius: 5px; font-family: 'Courier New', Courier, monospace; font-size: 20px; text-align: right; padding-right: 10px;">
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;">
+        <button onclick="calcInput('7')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">7</button>
+        <button onclick="calcInput('8')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">8</button>
+        <button onclick="calcInput('9')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">9</button>
+        <button onclick="calcInput('/')" style="background: rgba(181,126,220,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">/</button>
+        <button onclick="calcInput('4')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">4</button>
+        <button onclick="calcInput('5')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">5</button>
+        <button onclick="calcInput('6')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">6</button>
+        <button onclick="calcInput('*')" style="background: rgba(181,126,220,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">*</button>
+        <button onclick="calcInput('1')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">1</button>
+        <button onclick="calcInput('2')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">2</button>
+        <button onclick="calcInput('3')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">3</button>
+        <button onclick="calcInput('-')" style="background: rgba(181,126,220,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">-</button>
+        <button onclick="calcClear()" style="background: rgba(242,12,242,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">AC</button>
+        <button onclick="calcInput('0')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">0</button>
+        <button onclick="calcCalculate()" style="background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">=</button>
+        <button onclick="calcInput('+')" style="background: rgba(181,126,220,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">+</button>
+      </div>
     </div>
 
     <script src="script.js"></script>
