@@ -8,6 +8,11 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Custom Taskbar:** A taskbar layout for managing open windows, accessing applications, and navigating the interface.
 * **Space-Themed Environment:** A stylized desktop environment visually inspired by the star polaris.
 
+## Apps
+
+* **Note Taker:** A space themed note taking app built right into the task bar.
+* **Calculator:** A calculator in the task bar which can do simple calculations.
+
 ## Tech Stack
 
 * HTML5
