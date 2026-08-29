@@ -8,6 +8,11 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Custom Taskbar:** A taskbar layout for managing open windows, accessing applications, and navigating the interface.
 * **Space-Themed Environment:** A stylized desktop environment visually inspired by the star polaris.
 
+## Apps
+
+* **Note Taker:** A space themed note taking app built right into the task bar.
+* **Calculator:** A calculator in the task bar which can do simple calculations.
+
 ## Tech Stack
 
 * HTML5
@@ -16,8 +21,6 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 
 ## Setup and Installation
 
-Since this is a static web-based front-end project, no complex server setup or package installation is required to view the interface.
-
-1. Clone the repository to your local machine:
+It is a published website and it can be easily accessed using the link below:-
    ```bash
-   git clone [https://github.com/KaiTheGreat-123/polaris-os.git](https://github.com/KaiTheGreat-123/polaris-os.git)
+   ([https://github.com/KaiTheGreat-123/polaris-os.git](https://kaithegreat-123.github.io/polaris-os/))
