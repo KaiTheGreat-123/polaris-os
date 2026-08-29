@@ -59,9 +59,15 @@
          <img src="./notepad.png" style="width: 20px; height: 20px; border-radius: 8px;">
          <p style="margin: 0; font-size: 14px;">Note Taker</p>
         </div>
+
         <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('calcWindow')">
          <img src="./calcicon.png" style="width: 20px; height: 20px; border-radius: 8px;">
          <p style="margin: 0; font-size: 14px;">Calculator</p> 
+        </div>
+
+        <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius:5px; display:flex; align-items: center; gap: 10px; color:rgb(255,255,255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding:5px;" onclick="handleIconTap(this)" ondblclick="openWindow('TimerWindow')">
+          <img src="./timer.png" style="width: 20px; height:20px; border-radius: 8px">
+          <p style="margin: 0; font-style:14px;">Timer</p>
         </div>
         
         <p id="timeElement" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">Time</p>
@@ -90,6 +96,21 @@
         <button onclick="calcInput('0')" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">0</button>
         <button onclick="calcCalculate()" style="background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">=</button>
         <button onclick="calcInput('+')" style="background: rgba(181,126,220,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">+</button>
+      </div>
+    </div>
+
+    <div id="TimerWindow" style="display: none; position:absolute;top:250px;left:450px;width:260px;border:solid;border-radius:15px;padding:10px;color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+      <div id="TimerWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius:8px;padding:5px;text-align:center;cursor:move;margin-bottom:10px;">
+        <span style="color:white;font-family:'Courier New', Courier, monospace">DRAG HERE</span>
+        <button onclick="closeWindow('TimerWindow')" style="float:right;background:none;border:none;color:red;font-family: 'Courier New', Courier, monospace; font-weight:bold;cursor:pointer;font-size:16px;">X</button>
+      </div>
+      <h2 style="margin:5px 0 15px 0;color:violet; font-family: 'Courier New', Courier, monospace; text-align:left;">Timer</h2>
+
+      <div id="timerDisplay" style="text-align: center; font-size: 36px; color: white; font-family: 'Courier New', Courier, monospace; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid violet; border-radius: 5px; padding: 10px;">00:00:00</div>
+      <div style="display: flex; justify-content: space-between; gap: 5px;">
+        <button onclick="startTimer()" style="flex: 1; background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Start</button>
+        <button onclick="stopTimer()" style="flex: 1; background: rgba(242,12,242,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Stop</button>
+        <button onclick="resetTimer()" style="flex: 1; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Reset</button>
       </div>
     </div>
 

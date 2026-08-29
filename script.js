@@ -93,3 +93,36 @@ function calcCalculate() {
     display.value = "error";
   } 
 }
+
+dragElement(document.getElementById('TimerWindow'));
+
+let timerInterval = null;
+let timerSeconds = 0;
+
+function updateTimerDisplay() {
+  const hrs = String(Math.floor(timerSeconds/3600)).padStart(2,'0');
+  const mins = String(Math.floor((timerSeconds % 3600)/60)).padStart(2,'0');
+  const secs = String(Math.floor(timerSeconds % 60)).padStart(2,'0');
+
+  document.getElementById("timerDisplay").innerText = `${hrs}:${mins}:${secs}`;
+}
+
+function startTimer() {
+  if (timerInterval !== null) return;
+
+  timerInterval = setInterval(() => {
+    timerSeconds++;
+    updateTimerDisplay();
+  },1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+}
+
+function resetTimer() {
+  stopTimer();
+  timerSeconds = 0;
+  updateTimerDisplay();
+}
