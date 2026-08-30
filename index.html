@@ -26,7 +26,6 @@
       </p> 
     </div>
     
-    
     <div id="window2" onmousedown="bringToFront(this)" style="position: absolute; top: 50px; left: 600px; width:350px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
       
       <div id="window2header" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 10px;">
@@ -66,8 +65,13 @@
         </div>
 
         <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius:5px; display:flex; align-items: center; gap: 10px; color:rgb(255,255,255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding:5px;" onclick="handleIconTap(this)" ondblclick="openWindow('TimerWindow')">
-          <img src="./timer.png" style="width: 20px; height:20px; border-radius: 8px">
-          <p style="margin: 0; font-style:14px;">Timer</p>
+         <img src="./timer.png" style="width: 20px; height:20px; border-radius: 8px">
+         <p style="margin: 0; font-style:14px;">Timer</p>
+        </div>
+
+        <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('tictactoeWindow')">
+         <img src="./tictactoe.png" style="width:20px;height:20px;border-radius:8px">
+          <p style="margin: 0; font-size: 14px;">TicTacToe</p> 
         </div>
         
         <p id="timeElement" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">Time</p>
@@ -112,6 +116,17 @@
         <button onclick="stopTimer()" style="flex: 1; background: rgba(242,12,242,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Stop</button>
         <button onclick="resetTimer()" style="flex: 1; background: rgba(255,255,255,0.1); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Reset</button>
       </div>
+    </div>
+
+    <div id="tictactoeWindow" style="display:none;position:absolute;top:150px;left:100px;width:260px;border:solid;border-radius:15px;padding:10px;color:rgb(181,126,220);backdrop-filter: blur(5px);background-color: rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+      <div id="tictactoeWindowheader" style="background-color: rgba(255,255,255,0.1);border-radius: 8px;padding:5px;text-align:center;cursor:move;margin-bottom:10px;">
+        <span style="color:white;font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
+        <button onclick="closeWindow('tictactoeWindow')" style="float:right;background:none;border:none;color:red; font-family: 'Courier New', Courier, monospace; font-weight:bold;cursor:pointer;font-size:16px;">X</button>
+      </div>
+      <h2 style="margin:5px 0 15px 0;color:violet; font-family:'Courier New', Courier, monospace;text-align:center;">Tic-Tac-Toe</h2>
+      <div id="tttBoard" style="display:grid;grid-template-columns: repeat(3,1fr); gap:5px;margin-bottom:10px;"></div>
+      <p id="tttStatus" style="color:white;text-align:center;font-family:'Courier New', Courier, monospace;margin-bottom:10px;">Player 1's Turn!</p>
+      <button onclick="resetTicTacToe()" style="width: 100%; background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Reset Game</button>
     </div>
 
     <script src="script.js"></script>

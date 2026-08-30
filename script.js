@@ -5,6 +5,9 @@ setInterval(function () {
 dragElement(document.getElementById("window1"));
 dragElement(document.getElementById("window2"));
 dragElement(document.getElementById("calcWindow"));
+dragElement(document.getElementById("notesWindow"));
+dragElement(document.getElementById('TimerWindow'));
+dragElement(document.getElementById("tictactoeWindow"));
 
 function dragElement(element) {
   var initialX = 0, initialY = 0, currentX = 0, currentY = 0;
@@ -51,7 +54,6 @@ function closeWindow(windowId) {
   document.getElementById(windowId).style.display = "none";
 }
 
-dragElement(document.getElementById("notesWindow"));
 
 let selectedIcon = undefined;
 
@@ -76,7 +78,11 @@ function bringToFront(element) {
   element.style.zIndex = zIndexCounter;
 }
 
-let display = document.getElementById('calcDisplay')
+let display = document.getElementById('calcDisplay');
+
+function calcInput(value) {
+  display.value += value;
+}
 
 function calcInput(value) {
   display.value += value;
@@ -94,7 +100,6 @@ function calcCalculate() {
   } 
 }
 
-dragElement(document.getElementById('TimerWindow'));
 
 let timerInterval = null;
 let timerSeconds = 0;
@@ -126,3 +131,58 @@ function resetTimer() {
   timerSeconds = 0;
   updateTimerDisplay();
 }
+
+let tttBoard = ["", "", "", "", "", "", "", "", ""];
+let currentPlayer = "🌎";
+let gameActive = true;
+const winningConditions = [
+  [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+];
+
+function initTicTacToe() {
+  const boardElement = document.getElementById("tttBoard");
+  boardElement.innerHTML = "";
+  tttBoard.forEach((cell, index) => {
+    const cellElement = document.createElement("div");
+    cellElement.style.cssText = "height: 60px; background: rgba(0,0,0,0.5); border: 1px solid violet; border-radius: 5px; display: flex; justify-content: center; align-items: center; font-size: 30px; cursor: pointer;";
+    cellElement.onclick = () => handleCellClick(index, cellElement);
+    boardElement.appendChild(cellElement);
+  });
+}
+
+function handleCellClick(index, cellElement) {
+  if (tttBoard[index] !== "" || !gameActive) return;
+  tttBoard[index] = currentPlayer;
+  cellElement.innerText = currentPlayer;
+  checkWin();
+}
+
+function checkWin() {
+  let roundWon = false;
+  for (let i = 0; i < winningConditions.length; i++) {
+    const [a, b, c] = winningConditions[i];
+    if (tttBoard[a] && tttBoard[a] === tttBoard[b] && tttBoard[a] === tttBoard[c]) roundWon = true;
+  }
+  
+  if (roundWon) {
+    document.getElementById("tttStatus").innerText = `Player ${currentPlayer} Wins!`;
+    gameActive = false;
+    return;
+  }
+  if (!tttBoard.includes("")) {
+    document.getElementById("tttStatus").innerText = "It's a Draw!";
+    gameActive = false;
+    return;
+  }
+  currentPlayer = currentPlayer === "🌎" ? "🌕" : "🌎";
+  document.getElementById("tttStatus").innerText = `Player ${currentPlayer}'s Turn`;
+}
+
+function resetTicTacToe() {
+  tttBoard = ["", "", "", "", "", "", "", "", ""];
+  currentPlayer = "🌎";
+  gameActive = true;
+  document.getElementById("tttStatus").innerText = `Player 🌎's Turn`;
+  initTicTacToe();
+}
+initTicTacToe();
