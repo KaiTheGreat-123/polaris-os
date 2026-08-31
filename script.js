@@ -8,6 +8,7 @@ dragElement(document.getElementById("calcWindow"));
 dragElement(document.getElementById("notesWindow"));
 dragElement(document.getElementById('TimerWindow'));
 dragElement(document.getElementById("tictactoeWindow"));
+dragElement(document.getElementById("calendarWindow"));
 
 function dragElement(element) {
   var initialX = 0, initialY = 0, currentX = 0, currentY = 0;
@@ -186,3 +187,34 @@ function resetTicTacToe() {
   initTicTacToe();
 }
 initTicTacToe();
+
+function buildCalendar() {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  document.getElementById("monthYearDisplay").innerText = `${monthNames[month]} ${year}`;
+  
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const calendarDays = document.getElementById("calendarDays");
+  calendarDays.innerHTML = "";
+  
+  for (let i = 0; i < firstDay; i++) {
+    calendarDays.appendChild(document.createElement("div"));
+  }
+  
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dayCell = document.createElement("div");
+    dayCell.innerText = i;
+    dayCell.style.padding = "5px";
+    
+    if (i === date.getDate()) {
+      dayCell.style.background = "rgba(242, 12, 242, 0.5)";
+      dayCell.style.borderRadius = "5px";
+    }
+    calendarDays.appendChild(dayCell);
+  }
+}
+buildCalendar()

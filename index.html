@@ -56,24 +56,24 @@
 
         <div id="desktopApps" style="color: white; border: 1px solid rgb(181,126,220); border-radius: 5px;display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('notesWindow')">
          <img src="./notepad.png" style="width: 20px; height: 20px; border-radius: 8px;">
-         <p style="margin: 0; font-size: 14px;">Note Taker</p>
         </div>
 
         <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('calcWindow')">
          <img src="./calcicon.png" style="width: 20px; height: 20px; border-radius: 8px;">
-         <p style="margin: 0; font-size: 14px;">Calculator</p> 
         </div>
 
         <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius:5px; display:flex; align-items: center; gap: 10px; color:rgb(255,255,255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding:5px;" onclick="handleIconTap(this)" ondblclick="openWindow('TimerWindow')">
          <img src="./timer.png" style="width: 20px; height:20px; border-radius: 8px">
-         <p style="margin: 0; font-style:14px;">Timer</p>
         </div>
 
         <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('tictactoeWindow')">
          <img src="./tictactoe.png" style="width:20px;height:20px;border-radius:8px">
-          <p style="margin: 0; font-size: 14px;">TicTacToe</p> 
         </div>
         
+        <div id="calDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('calendarWindow')">
+          <img src="./calendar.png" style="width:20px;height:20px;border-radius:8px">
+        </div>
+
         <p id="timeElement" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">Time</p>
     </div>
 
@@ -127,6 +127,18 @@
       <div id="tttBoard" style="display:grid;grid-template-columns: repeat(3,1fr); gap:5px;margin-bottom:10px;"></div>
       <p id="tttStatus" style="color:white;text-align:center;font-family:'Courier New', Courier, monospace;margin-bottom:10px;">Player 1's Turn!</p>
       <button onclick="resetTicTacToe()" style="width: 100%; background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Reset Game</button>
+    </div>
+
+    <div id="calendarWindow" style="display:none; position:absolute; top:200px; left:500px; width:300px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+      <div id="calendarWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
+        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
+        <button onclick="closeWindow('calendarWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
+      </div>
+      <h2 id="monthYearDisplay" style="margin:5px 0 15px 0; color:violet; font-family: 'Courier New', Courier, monospace; text-align: center;">Month Year</h2>
+      <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; color: rgb(124, 190, 255); font-family: 'Courier New', monospace; margin-bottom: 5px;">
+        <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+      </div>
+      <div id="calendarDays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; color: white; font-family: 'Courier New', monospace;"></div>
     </div>
 
     <script src="script.js"></script>
