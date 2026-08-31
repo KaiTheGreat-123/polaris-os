@@ -7,38 +7,44 @@
       border-radius: 16px;
       border: 1px solid rgb(181,126,220);
     }
+
+    @keyframes starFall {
+      0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+    .star-confetti {
+      position: absolute;
+      font-size: 24px;
+      user-select: none;
+      pointer-events: none;
+      z-index: 9999;
+      animation: starFall 3s linear forwards;
+    }
     </style>
   </head>
-  <body style="background-image: url('./space.jpeg'); background-size: cover; background-position: center; margin: 0; height: 100vh; overflow: hidden;">
-    
-    <div id="window1" onmousedown="bringToFront(this)" style="position: absolute; top: 50px; left: 50px; width:500px; border:solid; border-radius:16px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
-      
-      <div id="window1header" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 10px;">
-        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
-        <button onclick="closeWindow('window1')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
-      </div>
+  <body style="background-image: url('./space.jpg'); background-size: cover; background-position: center; margin: 0; height: 100vh; overflow: hidden;">
 
-      <h1 style="margin:10px; color:darkcyan; font-family:'Courier New', Courier, monospace,sans-serif;">Welcome to Polaris!</h1>
-      <h2 style="margin:10px; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">What is polaris?</h2>
-      <p style="margin:10px; color:rgb(242, 12, 242); font-family: 'Courier New', Courier, monospace,sans-serif;">This is a web based OS based on space theme, made by kai! you can find my info down below. feel free to check it out! hope you like my work :)
-        <br>
-        <p style="text-align:right ;color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">-BY KAI</p>
-      </p> 
-    </div>
-    
-    <div id="window2" onmousedown="bringToFront(this)" style="position: absolute; top: 50px; left: 600px; width:350px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
-      
-      <div id="window2header" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 10px;">
+    <div id="infoWindow" onmousedown="bringToFront(this)" style="display:none; position: absolute; top: 100px; left: 150px; width:700px; border:solid; border-radius:16px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
+      <div id="infoWindowheader" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 15px;">
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
-        <button onclick="closeWindow('window2')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
+        <button onclick="closeWindow('infoWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
       </div>
-      <p style="margin:5px; color:rgb(124, 190, 255); font-family: 'Courier New', Courier, monospace,sans-serif;">My links:</p> 
-      <a href="https://stardance.hackclub.com/@kommurisujith36" style="color:whitesmoke; font-family: 'Courier New', Courier, monospace,sans-serif; margin:10px;">Check out my other projects here!</a>
-      <br>
-      <a href="https://en.wikipedia.org/wiki/Polaris" style="color:whitesmoke; font-family: 'Courier New', Courier, monospace,sans-serif; margin:10px;">which star is polaris?</a>
+      <div style="display: flex; gap: 20px;">
+        <div style="flex: 1;">
+          <h1 style="margin:0 0 10px 0; color:darkcyan; font-family:'Courier New', Courier, monospace,sans-serif;">Welcome to Polaris!</h1>
+          <h2 style="margin:0 0 10px 0; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">What is polaris?</h2>
+          <p style="margin:0 0 10px 0; color:rgb(242, 12, 242); font-family: 'Courier New', Courier, monospace,sans-serif;">This is a web based OS based on space theme, made by kai! you can find my other projects to the right. feel free to check it out! hope you like my work :)</p> 
+          <p style="text-align:right; margin:0; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">-BY KAI</p>
+        </div>
+        <div style="flex: 1; border-left: 2px solid rgba(255,255,255,0.2); padding-left: 20px;">
+          <p style="margin:0 0 15px 0; color:rgb(124, 190, 255); font-family: 'Courier New', Courier, monospace,sans-serif; font-size: 1.2em; font-weight: bold;">My links:</p> 
+          <a href="https://stardance.hackclub.com/@kai_lmao/projects" style="color:whitesmoke; font-family: 'Courier New', Courier, monospace,sans-serif; display: block; margin-bottom: 15px; text-decoration: none; border-bottom: 1px dotted whitesmoke; padding-bottom: 5px;">Check out my other projects here!</a>
+          <a href="https://en.wikipedia.org/wiki/Polaris" style="color:whitesmoke; font-family: 'Courier New', Courier, monospace,sans-serif; display: block; text-decoration: none; border-bottom: 1px dotted whitesmoke; padding-bottom: 5px;">Which star is polaris?</a>
+        </div>
+      </div>
     </div>
 
-    <div id="notesWindow" style="display:none; position:absolute; top:150px; left:300px; width:400px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+    <div id="notesWindow" style="display:none; position:absolute; top:150px; left:300px; width:350px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
       <div id="notesWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
         <button onclick="closeWindow('notesWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
@@ -47,34 +53,33 @@
       <textarea style="width: 90%; height: 200px; background: rgba(0,0,0,0.5); color: white; border: 1px solid violet; font-family: 'Courier New', Courier, monospace; outline: none; padding: 10px; resize: none;"></textarea>
     </div>
     
-    <div style="position: absolute; bottom:5px; left:10px; right:10px; margin:10px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(5px); background-color: rgba(251, 248, 248, 0.227); color: #fff; border-radius:16px; border-style:solid; border-color:#fff;">
-        
-        <p style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">POLARIS-OS</p>
-        
-        <button onclick="openWindow('window1')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">welcome window</button>
-        <button onclick="openWindow('window2')" style="background-color: rgba(0,0,0,0); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; cursor: pointer; font-family: 'Courier New', Courier, monospace; padding: 5px 10px; height: 30px;">links window</button>
+    <div style="position: absolute; bottom:5px; left:10px; right:10px; margin:10px; padding: 12px 20px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(5px); background-color: rgba(251, 248, 248, 0.227); color: #fff; border-radius:16px; border-style:solid; border-color:#fff; z-index: 1000;">
+     
+     <div onclick="triggerStarConfetti()" style="padding: 5px 10px; border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: border-color 0.2s;" onmouseenter="this.style.borderColor='darkgrey'" onmouseleave="this.style.borderColor='transparent'">
+       <p style="margin: 0; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; font-size: 20px; font-weight: bold;">Polaris-OS</p>
+     </div>
+    
+     <div id="infoDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('infoWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./infoicon.png" style="width: 26px; height: 26px; border-radius: 8px;">
+     </div>
 
-        <div id="desktopApps" style="color: white; border: 1px solid rgb(181,126,220); border-radius: 5px;display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('notesWindow')">
-         <img src="./notepad.png" style="width: 20px; height: 20px; border-radius: 8px;">
-        </div>
+     <div id="desktopApps" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('notesWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./notepad.png" style="width: 26px; height: 26px; border-radius: 8px;">
+     </div>
+    
+     <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('calcWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./calculator.png" style="width: 26px; height: 26px; border-radius: 8px;">
+     </div>
 
-        <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('calcWindow')">
-         <img src="./calcicon.png" style="width: 20px; height: 20px; border-radius: 8px;">
-        </div>
+     <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius: 12px; display:flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('TimerWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./timer.png" style="width: 23px; height: 26px; border-radius: 8px; padding:1px;">
+     </div>
 
-        <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius:5px; display:flex; align-items: center; gap: 10px; color:rgb(255,255,255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding:5px;" onclick="handleIconTap(this)" ondblclick="openWindow('TimerWindow')">
-         <img src="./timer.png" style="width: 20px; height:20px; border-radius: 8px">
-        </div>
-
-        <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('tictactoeWindow')">
-         <img src="./tictactoe.png" style="width:20px;height:20px;border-radius:8px">
-        </div>
-        
-        <div id="calDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 5px; display: flex; align-items: center; gap: 10px; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; cursor: pointer; padding: 5px;" onclick="handleIconTap(this)" ondblclick="openWindow('calendarWindow')">
-          <img src="./calendar.png" style="width:20px;height:20px;border-radius:8px">
-        </div>
-
-        <p id="timeElement" style="color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace">Time</p>
+     <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('tictactoeWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./tictactoe.png" style="width: 26px; height: 26px; border-radius: 8px;">
+     </div>
+    
+     <button id="timeElement" style="background-color: rgba(0,0,0,0); color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 5px 15px; height: 35px; cursor: pointer; transition: transform 0.2s;" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">Time</button>
     </div>
 
     <div id="calcWindow" style="display:none; position:absolute; top:200px; left:400px; width:260px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
@@ -110,7 +115,7 @@
       </div>
       <h2 style="margin:5px 0 15px 0;color:violet; font-family: 'Courier New', Courier, monospace; text-align:left;">Timer</h2>
 
-      <div id="timerDisplay" style="text-align: center; font-size: 36px; color: white; font-family: 'Courier New', Courier, monospace; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid violet; border-radius: 5px; padding: 10px;">00:00:00</div>
+      <div id="timerDisplay" style="text-align: center; font-size: 30px; color: white; font-family: 'Courier New', Courier, monospace; margin-bottom: 15px; background: rgba(0,0,0,0.5); border: 1px solid violet; border-radius: 5px; padding: 10px;">00:00:00.000</div>
       <div style="display: flex; justify-content: space-between; gap: 5px;">
         <button onclick="startTimer()" style="flex: 1; background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Start</button>
         <button onclick="stopTimer()" style="flex: 1; background: rgba(242,12,242,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Stop</button>
@@ -129,19 +134,14 @@
       <button onclick="resetTicTacToe()" style="width: 100%; background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Reset Game</button>
     </div>
 
-    <div id="calendarWindow" style="display:none; position:absolute; top:200px; left:500px; width:300px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
-      <div id="calendarWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
-        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
-        <button onclick="closeWindow('calendarWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
-      </div>
-      <h2 id="monthYearDisplay" style="margin:5px 0 15px 0; color:violet; font-family: 'Courier New', Courier, monospace; text-align: center;">Month Year</h2>
+    <div id="calendarWindow" style="display:none; position:absolute; width:275px; border:solid 1px rgb(181,126,220); border-radius:15px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.4);">
+      <h2 id="monthYearDisplay" style="margin:0 0 15px 0; color:violet; font-family: 'Courier New', Courier, monospace; text-align: center;">Month Year</h2>
       <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; color: rgb(124, 190, 255); font-family: 'Courier New', monospace; margin-bottom: 5px;">
-        <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
+        <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
       </div>
       <div id="calendarDays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; color: white; font-family: 'Courier New', monospace;"></div>
     </div>
 
     <script src="script.js"></script>
   </body>
-
 </html>

@@ -2,13 +2,106 @@ setInterval(function () {
   document.querySelector("#timeElement").innerHTML = new Date().toLocaleString();
 }, 1000);
 
-dragElement(document.getElementById("window1"));
-dragElement(document.getElementById("window2"));
+const timeEl = document.getElementById("timeElement");
+const calWindow = document.getElementById("calendarWindow");
+
+timeEl.style.cursor = "pointer";
+
+calWindow.style.display = "block"; 
+calWindow.style.top = "auto";
+calWindow.style.left = "auto";
+calWindow.style.right = "30px";
+calWindow.style.bottom = "-400px";
+calWindow.style.opacity = "0";
+calWindow.style.transition = "all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1)";
+calWindow.style.pointerEvents = "none";
+calWindow.style.zIndex = "1000";
+
+let isCalOpen = false;
+
+timeEl.onclick = function() {
+  if (!isCalOpen) {
+    calWindow.style.bottom = "90px"; 
+    calWindow.style.opacity = "1";
+    calWindow.style.pointerEvents = "auto";
+    isCalOpen = true;
+  } else {
+    calWindow.style.bottom = "-400px"; 
+    calWindow.style.opacity = "0";
+    calWindow.style.pointerEvents = "none";
+    isCalOpen = false;
+  }
+};
+
+function toggleWindow(windowId) {
+  const element = document.getElementById(windowId);
+  if (element.style.display === "none" || element.style.opacity === "0") {
+    openWindow(windowId);
+  } else {
+    closeWindow(windowId);
+  }
+}
+
+function openWindow(windowId) {
+  if(windowId === 'calendarWindow') {
+      timeEl.click();
+      return;
+  }
+  
+  const element = document.getElementById(windowId);
+
+  element.style.opacity = "0";
+  element.style.display = "block";
+  element.style.transition = "opacity 0.3s ease-in-out";
+
+  bringToFront(element);
+
+  setTimeout(() => {
+    element.style.opacity = "1";
+  }, 10);
+}
+
+function closeWindow(windowId) {
+  if(windowId === 'calendarWindow') {
+      timeEl.click();
+      return;
+  }
+  
+  const element = document.getElementById(windowId);
+
+  element.style.opacity = "0";
+  setTimeout(() => {
+    element.style.display = "none";
+  }, 300);
+}
+
+function triggerStarConfetti() {
+  const numStars = 40; 
+  const emojis = ['⭐', '✨', '🌟'];
+  
+  for (let i = 0; i < numStars; i++) {
+    const star = document.createElement('div');
+    star.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    star.classList.add('star-confetti');
+    
+    star.style.left = Math.random() * 100 + 'vw';
+    star.style.top = '-20px';
+    star.style.animationDuration = (Math.random() * 2 + 2) + 's'; 
+    star.style.animationDelay = Math.random() * 0.5 + 's';
+    
+    document.body.appendChild(star);
+    
+    setTimeout(() => {
+      star.remove();
+    }, 5000);
+  }
+}
+
+dragElement(document.getElementById("infoWindow"));
 dragElement(document.getElementById("calcWindow"));
 dragElement(document.getElementById("notesWindow"));
-dragElement(document.getElementById('TimerWindow'));
+dragElement(document.getElementById("TimerWindow"));
 dragElement(document.getElementById("tictactoeWindow"));
-dragElement(document.getElementById("calendarWindow"));
 
 function dragElement(element) {
   var initialX = 0, initialY = 0, currentX = 0, currentY = 0;
@@ -47,15 +140,6 @@ function dragElement(element) {
   }
 }
 
-function openWindow(windowId) {
-  document.getElementById(windowId).style.display = "block";
-}
-
-function closeWindow(windowId) {
-  document.getElementById(windowId).style.display = "none";
-}
-
-
 let selectedIcon = undefined;
 
 function handleIconTap(element) {
@@ -85,10 +169,6 @@ function calcInput(value) {
   display.value += value;
 }
 
-function calcInput(value) {
-  display.value += value;
-}
-
 function calcClear() {
   display.value = "";
 }
@@ -101,25 +181,25 @@ function calcCalculate() {
   } 
 }
 
-
 let timerInterval = null;
-let timerSeconds = 0;
+let timerTime = 0; 
 
 function updateTimerDisplay() {
-  const hrs = String(Math.floor(timerSeconds/3600)).padStart(2,'0');
-  const mins = String(Math.floor((timerSeconds % 3600)/60)).padStart(2,'0');
-  const secs = String(Math.floor(timerSeconds % 60)).padStart(2,'0');
+  const hrs = String(Math.floor(timerTime / 3600000)).padStart(2, '0');
+  const mins = String(Math.floor((timerTime % 3600000) / 60000)).padStart(2, '0');
+  const secs = String(Math.floor((timerTime % 60000) / 1000)).padStart(2, '0');
+  const ms = String(timerTime % 1000).padStart(3, '0');
 
-  document.getElementById("timerDisplay").innerText = `${hrs}:${mins}:${secs}`;
+  document.getElementById("timerDisplay").innerText = `${hrs}:${mins}:${secs}.${ms}`;
 }
 
 function startTimer() {
   if (timerInterval !== null) return;
 
   timerInterval = setInterval(() => {
-    timerSeconds++;
+    timerTime += 10;
     updateTimerDisplay();
-  },1000);
+  }, 10); 
 }
 
 function stopTimer() {
@@ -129,7 +209,7 @@ function stopTimer() {
 
 function resetTimer() {
   stopTimer();
-  timerSeconds = 0;
+  timerTime = 0;
   updateTimerDisplay();
 }
 
@@ -217,4 +297,4 @@ function buildCalendar() {
     calendarDays.appendChild(dayCell);
   }
 }
-buildCalendar()
+buildCalendar();
