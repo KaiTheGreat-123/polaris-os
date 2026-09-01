@@ -1,3 +1,35 @@
+window.onload = function() {
+  let progress = 0;
+  const loadingScreen = document.getElementById("loadingScreen");
+  const loadingElements = document.getElementById("loadingElements");
+  const welcomeMessage = document.getElementById("welcomeMessage");
+  const starFill = document.getElementById("starFill");
+  const loadingText = document.getElementById("loadingText");
+  const loadingInterval = setInterval(() => {
+    progress += Math.floor(Math.random() * 5) + 1; 
+    if (progress >= 100) {
+      progress = 100;
+      clearInterval(loadingInterval);
+      setTimeout(() => {
+        loadingElements.style.display = "none";
+        welcomeMessage.style.display = "block";
+        setTimeout(() => {
+          welcomeMessage.style.opacity = "1";
+        }, 50);
+        setTimeout(() => {
+          loadingScreen.style.opacity = "0";
+          loadingScreen.style.transform = "scale(1.1)"; 
+          setTimeout(() => {
+            loadingScreen.style.display = "none";
+          }, 800);
+        }, 1500);
+      }, 400);
+    }
+    starFill.style.height = progress + "%";
+    loadingText.innerText = progress + "%";
+  }, 40); 
+};
+
 setInterval(function () {
   document.querySelector("#timeElement").innerHTML = new Date().toLocaleString();
 }, 1000);
@@ -268,10 +300,12 @@ function resetTicTacToe() {
 }
 initTicTacToe();
 
+let currentCalendarDate = new Date();
+
 function buildCalendar() {
-  const date = new Date();
-  const month = date.getMonth();
-  const year = date.getFullYear();
+  const month = currentCalendarDate.getMonth();
+  const year = currentCalendarDate.getFullYear();
+  const today = new Date();
   
   const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   document.getElementById("monthYearDisplay").innerText = `${monthNames[month]} ${year}`;
@@ -280,21 +314,32 @@ function buildCalendar() {
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const calendarDays = document.getElementById("calendarDays");
   calendarDays.innerHTML = "";
-  
+
   for (let i = 0; i < firstDay; i++) {
     calendarDays.appendChild(document.createElement("div"));
   }
-  
+
   for (let i = 1; i <= daysInMonth; i++) {
     const dayCell = document.createElement("div");
     dayCell.innerText = i;
     dayCell.style.padding = "5px";
-    
-    if (i === date.getDate()) {
+
+    if (i === today.getDate() && month === today.getMonth() && year === today.getFullYear()) {
       dayCell.style.background = "rgba(242, 12, 242, 0.5)";
       dayCell.style.borderRadius = "5px";
     }
     calendarDays.appendChild(dayCell);
   }
 }
+
+function prevMonth() {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() - 1);
+  buildCalendar();
+}
+
+function nextMonth() {
+  currentCalendarDate.setMonth(currentCalendarDate.getMonth() + 1);
+  buildCalendar();
+}
+
 buildCalendar();

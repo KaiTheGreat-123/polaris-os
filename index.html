@@ -7,7 +7,7 @@
       border-radius: 16px;
       border: 1px solid rgb(181,126,220);
     }
-
+    
     @keyframes starFall {
       0% { transform: translateY(-5vh) rotate(0deg); opacity: 1; }
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
@@ -24,7 +24,34 @@
   </head>
   <body style="background-image: url('./space.jpg'); background-size: cover; background-position: center; margin: 0; height: 100vh; overflow: hidden;">
 
-    <div id="infoWindow" onmousedown="bringToFront(this)" style="display:none; position: absolute; top: 100px; left: 150px; width:700px; border:solid; border-radius:16px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227);">
+    <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: #0a0a0f; z-index: 100000; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.8s ease, transform 0.8s ease;">
+      <div id="loadingElements" style="display: flex; flex-direction: column; align-items: center;">
+        <div style="position: relative; width: 250px; height: 250px;">
+          <svg style="position: absolute; top: 0; left: 0; color: rgba(181, 126, 220, 0.2);" viewBox="0 0 24 24" width="250" height="250" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          <div id="starFill" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; overflow: hidden; color: rgb(181, 126, 220); transition: height 0.2s ease;">
+            <svg style="position: absolute; bottom: 0; left: 0;" viewBox="0 0 24 24" width="250" height="250" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+            </svg>
+          </div>
+        </div>
+        <div id="loadingText" style="color: rgb(181, 126, 220); font-family: 'Courier New', Courier, monospace; font-size: 28px; margin-top: 30px; font-weight: bold; letter-spacing: 2px;">0%</div>
+        <div style="color: rgba(255,255,255,0.5); font-family: 'Courier New', Courier, monospace; margin-top: 10px; font-size: 16px;">Booting Polaris-OS...</div>
+      </div>
+
+      <div id="welcomeMessage" style="display: none; color: rgb(181, 126, 220); font-family: 'Courier New', Courier, monospace; font-size: 40px; font-weight: bold; text-shadow: 0 0 15px rgba(181, 126, 220, 0.6); text-align: center; opacity: 0; transition: opacity 0.5s ease;">
+        Welcome to Polaris-OS
+      </div>
+      
+    </div>
+
+    <div onclick="triggerStarConfetti()" style="position: absolute; top: 25%; left: 50%; transform: translate(-50%, -50%); text-align: center; cursor: pointer; z-index: 0;">
+      <h1 style="font-size: 5rem; margin: 0; color: #ffb3d9; font-family: 'Courier New', Courier, monospace; text-shadow: 0 4px 15px rgba(0,0,0,0.8);">PolarisOS</h1>
+      <p style="margin: 10px 0 0 0; color: rgba(255,255,255,0.7); font-family: 'Courier New', Courier, monospace; letter-spacing: 2px;">click here for confetti</p>
+    </div>
+
+    <div id="infoWindow" onmousedown="bringToFront(this)" style="display:none; position: absolute; top: 100px; left: 150px; width:700px; border: solid 1px rgb(181,126,220); border-radius:16px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color: rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);">
       <div id="infoWindowheader" style="background-color: rgba(255,255,255,0.1); border-radius: 8px; padding: 5px; text-align: center; cursor: move; margin-bottom: 15px;">
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
         <button onclick="closeWindow('infoWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
@@ -44,7 +71,7 @@
       </div>
     </div>
 
-    <div id="notesWindow" style="display:none; position:absolute; top:150px; left:300px; width:350px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+    <div id="notesWindow" style="display:none; position:absolute; top:150px; left:300px; width:350px; border: solid 1px rgb(181,126,220); border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);" onmousedown="bringToFront(this)">
       <div id="notesWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
         <button onclick="closeWindow('notesWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
@@ -52,37 +79,33 @@
       <h2 style="margin:10px; color:violet; font-family: 'Courier New', Courier, monospace,sans-serif;">Note Taker App</h2>
       <textarea style="width: 90%; height: 200px; background: rgba(0,0,0,0.5); color: white; border: 1px solid violet; font-family: 'Courier New', Courier, monospace; outline: none; padding: 10px; resize: none;"></textarea>
     </div>
-    
-    <div style="position: absolute; bottom:5px; left:10px; right:10px; margin:10px; padding: 12px 20px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(5px); background-color: rgba(251, 248, 248, 0.227); color: #fff; border-radius:16px; border-style:solid; border-color:#fff; z-index: 1000;">
+
+    <div style="position: absolute; bottom:5px; left:10px; right:10px; margin:10px; padding: 12px 20px; display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(5px); background-color: rgba(251, 248, 248, 0.227); color: #fff; border-radius:16px; border: none; z-index: 1000; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);">
      
-     <div onclick="triggerStarConfetti()" style="padding: 5px 10px; border: 1px solid transparent; border-radius: 8px; cursor: pointer; transition: border-color 0.2s;" onmouseenter="this.style.borderColor='darkgrey'" onmouseleave="this.style.borderColor='transparent'">
-       <p style="margin: 0; color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; font-size: 20px; font-weight: bold;">Polaris-OS</p>
-     </div>
-    
-     <div id="infoDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('infoWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+     <div id="infoDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('infoWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
       <img src="./infoicon.png" style="width: 26px; height: 26px; border-radius: 8px;">
      </div>
 
-     <div id="desktopApps" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('notesWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+     <div id="desktopApps" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('notesWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
       <img src="./notepad.png" style="width: 26px; height: 26px; border-radius: 8px;">
      </div>
     
-     <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('calcWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+     <div id="calcDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('calcWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
       <img src="./calculator.png" style="width: 26px; height: 26px; border-radius: 8px;">
      </div>
 
-     <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius: 12px; display:flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('TimerWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
-      <img src="./timer.png" style="width: 23px; height: 26px; border-radius: 8px; padding:1px;">
+     <div id="TimerDesktopApp" style="border:1px solid rgb(181,126,220); border-radius: 12px; display:flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('TimerWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./timer.png" style="width: 26px; height: 26px; border-radius: 8px;">
      </div>
 
-     <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 3px; transition: transform 0.2s;" onclick="toggleWindow('tictactoeWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+     <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('tictactoeWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
       <img src="./tictactoe.png" style="width: 26px; height: 26px; border-radius: 8px;">
      </div>
     
      <button id="timeElement" style="background-color: rgba(0,0,0,0); color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 5px 15px; height: 35px; cursor: pointer; transition: transform 0.2s;" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">Time</button>
     </div>
 
-    <div id="calcWindow" style="display:none; position:absolute; top:200px; left:400px; width:260px; border:solid; border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+    <div id="calcWindow" style="display:none; position:absolute; top:200px; left:400px; width:260px; border: solid 1px rgb(181,126,220); border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);" onmousedown="bringToFront(this)">
       <div id="calcWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
         <button onclick="closeWindow('calcWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
@@ -108,7 +131,7 @@
       </div>
     </div>
 
-    <div id="TimerWindow" style="display: none; position:absolute;top:250px;left:450px;width:260px;border:solid;border-radius:15px;padding:10px;color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+    <div id="TimerWindow" style="display: none; position:absolute;top:250px;left:450px;width:260px; border: solid 1px rgb(181,126,220); border-radius:15px;padding:10px;color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);" onmousedown="bringToFront(this)">
       <div id="TimerWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius:8px;padding:5px;text-align:center;cursor:move;margin-bottom:10px;">
         <span style="color:white;font-family:'Courier New', Courier, monospace">DRAG HERE</span>
         <button onclick="closeWindow('TimerWindow')" style="float:right;background:none;border:none;color:red;font-family: 'Courier New', Courier, monospace; font-weight:bold;cursor:pointer;font-size:16px;">X</button>
@@ -123,7 +146,7 @@
       </div>
     </div>
 
-    <div id="tictactoeWindow" style="display:none;position:absolute;top:150px;left:100px;width:260px;border:solid;border-radius:15px;padding:10px;color:rgb(181,126,220);backdrop-filter: blur(5px);background-color: rgba(92, 92, 92, 0.227);" onmousedown="bringToFront(this)">
+    <div id="tictactoeWindow" style="display:none;position:absolute;top:150px;left:100px;width:260px; border: solid 1px rgb(181,126,220); border-radius:15px;padding:10px;color:rgb(181,126,220);backdrop-filter: blur(5px);background-color: rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);" onmousedown="bringToFront(this)">
       <div id="tictactoeWindowheader" style="background-color: rgba(255,255,255,0.1);border-radius: 8px;padding:5px;text-align:center;cursor:move;margin-bottom:10px;">
         <span style="color:white;font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
         <button onclick="closeWindow('tictactoeWindow')" style="float:right;background:none;border:none;color:red; font-family: 'Courier New', Courier, monospace; font-weight:bold;cursor:pointer;font-size:16px;">X</button>
@@ -134,10 +157,16 @@
       <button onclick="resetTicTacToe()" style="width: 100%; background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 10px; cursor: pointer; font-family: 'Courier New', monospace;">Reset Game</button>
     </div>
 
-    <div id="calendarWindow" style="display:none; position:absolute; width:275px; border:solid 1px rgb(181,126,220); border-radius:15px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.4);">
-      <h2 id="monthYearDisplay" style="margin:0 0 15px 0; color:violet; font-family: 'Courier New', Courier, monospace; text-align: center;">Month Year</h2>
+    <div id="calendarWindow" style="display:none; position:absolute; width:275px; border:solid 1px rgb(181,126,220); border-radius:15px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.4); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);">
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <button onclick="prevMonth()" style="background: none; border: none; color: rgb(124, 190, 255); font-weight: bold; cursor: pointer; font-size: 18px;">&lt;</button>
+        <h2 id="monthYearDisplay" style="margin: 0; color:violet; font-family: 'Courier New', Courier, monospace; text-align: center;">Month Year</h2>
+        <button onclick="nextMonth()" style="background: none; border: none; color: rgb(124, 190, 255); font-weight: bold; cursor: pointer; font-size: 18px;">&gt;</button>
+      </div>
+
       <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; color: rgb(124, 190, 255); font-family: 'Courier New', monospace; margin-bottom: 5px;">
-        <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+        <div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div>
       </div>
       <div id="calendarDays" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; color: white; font-family: 'Courier New', monospace;"></div>
     </div>
