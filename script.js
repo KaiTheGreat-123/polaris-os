@@ -130,6 +130,7 @@ function triggerStarConfetti() {
 }
 
 dragElement(document.getElementById("infoWindow"));
+dragElement(document.getElementById("weatherWindow"));
 dragElement(document.getElementById("calcWindow"));
 dragElement(document.getElementById("notesWindow"));
 dragElement(document.getElementById("TimerWindow"));
@@ -169,6 +170,63 @@ function dragElement(element) {
   function stopDragging() {
     document.onmouseup = null;
     document.onmousemove = null;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const weatherInput = document.getElementById("weatherInput");
+  if(weatherInput) {
+    weatherInput.addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        fetchWeather();
+      }
+    });
+  }
+});
+
+async function fetchWeather() {
+  const city = document.getElementById("weatherInput").value;
+  const resultDiv = document.getElementById("weatherResult");
+  if (!city) return;
+
+  resultDiv.innerHTML = "<p>Loading...</p>";
+
+  try {
+    const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`);
+    const geoData = await geoRes.json();
+
+    if (!geoData.results || geoData.results.length === 0) {
+      resultDiv.innerHTML = "<p>City not found.</p>";
+      return;
+    }
+
+    const lat = geoData.results[0].latitude;
+    const lon = geoData.results[0].longitude;
+    const cityName = geoData.results[0].name;
+
+    const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+    const weatherData = await weatherRes.json();
+    const current = weatherData.current_weather;
+
+    const weatherCode = current.weathercode;
+    let emoji = "☁️";
+    let condition = "Cloudy";
+    
+    if (weatherCode === 0) { emoji = "☀️"; condition = "Clear"; }
+    else if (weatherCode > 0 && weatherCode <= 3) { emoji = "⛅"; condition = "Partly Cloudy"; }
+    else if (weatherCode >= 51 && weatherCode <= 67) { emoji = "🌧️"; condition = "Rain"; }
+    else if (weatherCode >= 71 && weatherCode <= 77) { emoji = "❄️"; condition = "Snow"; }
+    else if (weatherCode >= 95 && weatherCode <= 99) { emoji = "⛈️"; condition = "Thunderstorm"; }
+
+    resultDiv.innerHTML = `
+      <h3 style="margin: 5px 0 0 0; color: #ffb3d9;">${cityName}</h3>
+      <div style="font-size: 55px; margin: 10px 0; text-shadow: 0px 0px 10px rgba(255,255,255,0.2);">${emoji}</div>
+      <p style="margin: 0; font-size: 26px; font-weight: bold;">${current.temperature}°C</p>
+      <p style="margin: 5px 0 0 0; color: #7cbeff;">${condition}</p>
+    `;
+  } catch (err) {
+    resultDiv.innerHTML = "<p>Error fetching weather.</p>";
   }
 }
 

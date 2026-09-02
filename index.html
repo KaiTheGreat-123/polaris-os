@@ -71,6 +71,23 @@
       </div>
     </div>
 
+    <div id="weatherWindow" style="display:none; position:absolute; top:180px; left:600px; width:280px; border: solid 1px rgb(181,126,220); border-radius:15px; padding:15px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);" onmousedown="bringToFront(this)">
+      <div id="weatherWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
+        <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
+        <button onclick="closeWindow('weatherWindow')" style="float: right; background: none; border: none; color: red; font-family: 'Courier New', Courier, monospace; font-weight: bold; cursor: pointer; font-size: 16px;">X</button>
+      </div>
+      <h2 style="margin:0 0 15px 0; color:violet; font-family: 'Courier New', Courier, monospace; text-align:center;">Weather App</h2>
+      
+      <div style="display: flex; gap: 5px; margin-bottom: 15px;">
+        <input type="text" id="weatherInput" placeholder="Enter city...(eg.london)" style="flex: 1; background: rgba(0,0,0,0.5); color: white; border: 1px solid violet; border-radius: 5px; padding: 5px; font-family: 'Courier New', Courier, monospace; outline: none;">
+        <button onclick="fetchWeather()" style="background: rgba(124,190,255,0.3); color: white; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 5px 10px; cursor: pointer; font-family: 'Courier New', monospace;">Go</button>
+      </div>
+
+      <div id="weatherResult" style="text-align: center; color: white; font-family: 'Courier New', Courier, monospace;">
+        <p>Type a location to search.</p>
+      </div>
+    </div>
+
     <div id="notesWindow" style="display:none; position:absolute; top:150px; left:300px; width:350px; border: solid 1px rgb(181,126,220); border-radius:15px; padding:10px; color:rgb(181,126,220); backdrop-filter: blur(5px); background-color:rgba(92, 92, 92, 0.227); box-shadow: 0 0 25px rgba(181, 126, 220, 0.6);" onmousedown="bringToFront(this)">
       <div id="notesWindowheader" style="background-color:rgba(255,255,255,0.1);border-radius: 8px; padding: 5px; text-align:center; cursor:move ;margin-bottom:10px;">
         <span style="color: white; font-family: 'Courier New', Courier, monospace;">DRAG HERE</span>
@@ -100,6 +117,10 @@
 
      <div id="tttDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('tictactoeWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
       <img src="./tictactoe.png" style="width: 26px; height: 26px; border-radius: 8px;">
+     </div>
+
+     <div id="weatherDesktopApp" style="border: 1px solid rgb(181,126,220); border-radius: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; padding: 6px; transition: transform 0.2s;" onclick="toggleWindow('weatherWindow')" onmouseenter="this.style.transform='scale(1.2)'" onmouseleave="this.style.transform='scale(1)'">
+      <img src="./weather.png" style="width: 26px; height: 26px; border-radius: 8px;">
      </div>
     
      <button id="timeElement" style="background-color: rgba(0,0,0,0); color:rgb(255, 255, 255); font-family:'Courier New', Courier, monospace; border: 1px solid rgb(181,126,220); border-radius: 5px; padding: 5px 15px; height: 35px; cursor: pointer; transition: transform 0.2s;" onmouseenter="this.style.transform='scale(1.1)'" onmouseleave="this.style.transform='scale(1)'">Time</button>
