@@ -9,33 +9,44 @@ window.onload = function() {
   const welcomeMessage = document.getElementById("welcomeMessage");
   const starFill = document.getElementById("starFill");
   const loadingText = document.getElementById("loadingText");
-  
+
   const loadingInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 5) + 1; 
+
     if (progress >= 100) {
       progress = 100;
       clearInterval(loadingInterval);
-      
+
       setTimeout(() => {
         loadingElements.style.display = "none";
+        
+        welcomeMessage.innerHTML = `
+          <div style="font-size: 28px; margin-bottom: 10px;">Welcome to Polaris-OS</div>
+          <div style="font-size: 15px; opacity: 0.75; letter-spacing: 1px;">[ Click anywhere to start. ]</div>
+        `;
         welcomeMessage.style.display = "block";
         
         setTimeout(() => {
           welcomeMessage.style.opacity = "1";
         }, 50);
-        
-        setTimeout(() => {
+
+        loadingScreen.style.cursor = "pointer";
+
+        loadingScreen.addEventListener("click", function launchDesktop() {
+          startupSound.currentTime = 0;
+          startupSound.play().catch(e => console.log(e));
+
           loadingScreen.style.opacity = "0";
           loadingScreen.style.transform = "scale(1.1)"; 
-          
-          startupSound.play().catch(e => console.log("Browser blocked autoplay. User must click first."));
 
           setTimeout(() => {
             loadingScreen.style.display = "none";
           }, 800);
-        }, 1500);
+        }, { once: true });
+
       }, 400);
     }
+
     starFill.style.height = progress + "%";
     loadingText.innerText = progress + "%";
   }, 40); 
