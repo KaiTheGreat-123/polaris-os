@@ -1,3 +1,7 @@
+const startupSound = new Audio('./startup.mp3');
+const clickSound = new Audio('./click.mp3');
+const calendarSound = new Audio('./calendar.mp3');
+
 window.onload = function() {
   let progress = 0;
   const loadingScreen = document.getElementById("loadingScreen");
@@ -5,20 +9,27 @@ window.onload = function() {
   const welcomeMessage = document.getElementById("welcomeMessage");
   const starFill = document.getElementById("starFill");
   const loadingText = document.getElementById("loadingText");
+  
   const loadingInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 5) + 1; 
     if (progress >= 100) {
       progress = 100;
       clearInterval(loadingInterval);
+      
       setTimeout(() => {
         loadingElements.style.display = "none";
         welcomeMessage.style.display = "block";
+        
         setTimeout(() => {
           welcomeMessage.style.opacity = "1";
         }, 50);
+        
         setTimeout(() => {
           loadingScreen.style.opacity = "0";
           loadingScreen.style.transform = "scale(1.1)"; 
+          
+          startupSound.play().catch(e => console.log("Browser blocked autoplay. User must click first."));
+
           setTimeout(() => {
             loadingScreen.style.display = "none";
           }, 800);
@@ -36,7 +47,6 @@ setInterval(function () {
 
 const timeEl = document.getElementById("timeElement");
 const calWindow = document.getElementById("calendarWindow");
-
 timeEl.style.cursor = "pointer";
 
 calWindow.style.display = "block"; 
@@ -53,6 +63,9 @@ let isCalOpen = false;
 
 timeEl.onclick = function() {
   if (!isCalOpen) {
+    calendarSound.currentTime = 0;
+    calendarSound.play().catch(e => {});
+
     calWindow.style.bottom = "90px"; 
     calWindow.style.opacity = "1";
     calWindow.style.pointerEvents = "auto";
@@ -81,11 +94,9 @@ function openWindow(windowId) {
   }
   
   const element = document.getElementById(windowId);
-
   element.style.opacity = "0";
   element.style.display = "block";
   element.style.transition = "opacity 0.3s ease-in-out";
-
   bringToFront(element);
 
   setTimeout(() => {
@@ -100,7 +111,6 @@ function closeWindow(windowId) {
   }
   
   const element = document.getElementById(windowId);
-
   element.style.opacity = "0";
   setTimeout(() => {
     element.style.display = "none";
@@ -138,7 +148,6 @@ dragElement(document.getElementById("tictactoeWindow"));
 
 function dragElement(element) {
   var initialX = 0, initialY = 0, currentX = 0, currentY = 0;
-  
   var header = document.getElementById(element.id + "header");
 
   if (header) {
@@ -171,6 +180,13 @@ function dragElement(element) {
     document.onmouseup = null;
     document.onmousemove = null;
   }
+}
+
+let zIndexCounter = 1;
+
+function bringToFront(element) {
+  zIndexCounter++;
+  element.style.zIndex = zIndexCounter;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -230,29 +246,6 @@ async function fetchWeather() {
   }
 }
 
-let selectedIcon = undefined;
-
-function handleIconTap(element) {
-  if (selectedIcon !== undefined && selectedIcon !== element) {
-    selectedIcon.classList.remove("selected");
-  }
-  
-  if (element.classList.contains("selected")) {
-    element.classList.remove("selected");
-    selectedIcon = undefined;
-  } else {
-    element.classList.add("selected");
-    selectedIcon = element;
-  }
-}
-
-let zIndexCounter = 1;
-
-function bringToFront(element) {
-  zIndexCounter++;
-  element.style.zIndex = zIndexCounter;
-}
-
 let display = document.getElementById('calcDisplay');
 
 function calcInput(value) {
@@ -279,13 +272,11 @@ function updateTimerDisplay() {
   const mins = String(Math.floor((timerTime % 3600000) / 60000)).padStart(2, '0');
   const secs = String(Math.floor((timerTime % 60000) / 1000)).padStart(2, '0');
   const ms = String(timerTime % 1000).padStart(3, '0');
-
   document.getElementById("timerDisplay").innerText = `${hrs}:${mins}:${secs}.${ms}`;
 }
 
 function startTimer() {
   if (timerInterval !== null) return;
-
   timerInterval = setInterval(() => {
     timerTime += 10;
     updateTimerDisplay();
@@ -401,3 +392,12 @@ function nextMonth() {
 }
 
 buildCalendar();
+
+document.addEventListener('click', function(event) {
+  const isClickable = event.target.closest('button') || event.target.closest('[onclick]');
+  
+  if (isClickable) {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e => {});
+  }
+});
