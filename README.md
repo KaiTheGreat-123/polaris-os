@@ -18,8 +18,9 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Note Taker:** A space themed note taking app built right into the task bar.
 * **Calculator:** A calculator in the task bar which can do simple calculations.
 * **Timer:** A taskbar-integrated countdown tool to track your daily tasks.
-* **Tic-Tac-Toe:** A built-in classic mini-game to pass the time.
+* **Tic-Tac-Toe:** A built-in classic mini-game to pass the time, now with a bot to play against if your alone!
 * **Weather:** A weather app powered by the open-meteo API, allowing to get real time temperatures and weather conditions.
+* **Music player:** A music player app with a bunch of old but gold songs to listen to! _(thanks roma)_
 * **Easter egg:** Clicking on "Polaris-os" makes confetti!
 
 ## Tech Stack
