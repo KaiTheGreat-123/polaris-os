@@ -154,6 +154,7 @@ dragElement(document.getElementById("infoWindow"));
 dragElement(document.getElementById("weatherWindow"));
 dragElement(document.getElementById("calcWindow"));
 dragElement(document.getElementById("notesWindow"));
+dragElement(document.getElementById("musicWindow"));
 dragElement(document.getElementById("TimerWindow"));
 dragElement(document.getElementById("tictactoeWindow"));
 
@@ -308,9 +309,19 @@ function resetTimer() {
 let tttBoard = ["", "", "", "", "", "", "", "", ""];
 let currentPlayer = "🌎";
 let gameActive = true;
+let isBotMode = false;
+let isBotThinking = false;
+
 const winningConditions = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
 ];
+
+function setTTTMode(botMode) {
+  isBotMode = botMode;
+  document.getElementById('modePlayerBtn').style.background = botMode ? 'rgba(255,255,255,0.1)' : 'rgba(242,12,242,0.3)';
+  document.getElementById('modeBotBtn').style.background = botMode ? 'rgba(124,190,255,0.3)' : 'rgba(255,255,255,0.1)';
+  resetTicTacToe();
+}
 
 function initTicTacToe() {
   const boardElement = document.getElementById("tttBoard");
@@ -324,10 +335,55 @@ function initTicTacToe() {
 }
 
 function handleCellClick(index, cellElement) {
-  if (tttBoard[index] !== "" || !gameActive) return;
+  if (tttBoard[index] !== "" || !gameActive || isBotThinking) return;
+  
   tttBoard[index] = currentPlayer;
   cellElement.innerText = currentPlayer;
   checkWin();
+
+  if (isBotMode && gameActive && currentPlayer === "🌕") {
+    isBotThinking = true;
+    document.getElementById("tttStatus").innerText = "Bot is thinking...";
+    setTimeout(makeBotMove, 600);
+  }
+}
+
+function makeBotMove() {
+  if (!gameActive) return;
+  let bestMove = -1;
+  function findWinningMove(playerSymbol) {
+    for (let i = 0; i < winningConditions.length; i++) {
+      const [a, b, c] = winningConditions[i];
+      if (tttBoard[a] === playerSymbol && tttBoard[b] === playerSymbol && tttBoard[c] === "") return c;
+      if (tttBoard[a] === playerSymbol && tttBoard[c] === playerSymbol && tttBoard[b] === "") return b;
+      if (tttBoard[b] === playerSymbol && tttBoard[c] === playerSymbol && tttBoard[a] === "") return a;
+    }
+    return -1;
+  }
+  bestMove = findWinningMove("🌕");
+  if (bestMove === -1) bestMove = findWinningMove("🌎");
+  if (bestMove === -1 && tttBoard[4] === "") bestMove = 4;
+  if (bestMove === -1) {
+    let emptyCells = [];
+    tttBoard.forEach((cell, i) => { if (cell === "") emptyCells.push(i); });
+    if (emptyCells.length > 0) {
+      bestMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    }
+  }
+
+  if (bestMove !== -1) {
+    tttBoard[bestMove] = currentPlayer;
+    const cells = document.getElementById("tttBoard").children;
+    cells[bestMove].innerText = currentPlayer;
+    isBotThinking = false;
+    
+    if(typeof clickSound !== 'undefined') {
+      clickSound.currentTime = 0;
+      clickSound.play().catch(e=>{});
+    }
+
+    checkWin();
+  }
 }
 
 function checkWin() {
@@ -347,6 +403,7 @@ function checkWin() {
     gameActive = false;
     return;
   }
+  
   currentPlayer = currentPlayer === "🌎" ? "🌕" : "🌎";
   document.getElementById("tttStatus").innerText = `Player ${currentPlayer}'s Turn`;
 }
@@ -355,6 +412,7 @@ function resetTicTacToe() {
   tttBoard = ["", "", "", "", "", "", "", "", ""];
   currentPlayer = "🌎";
   gameActive = true;
+  isBotThinking = false;
   document.getElementById("tttStatus").innerText = `Player 🌎's Turn`;
   initTicTacToe();
 }
@@ -410,5 +468,89 @@ document.addEventListener('click', function(event) {
   if (isClickable) {
     clickSound.currentTime = 0;
     clickSound.play().catch(e => {});
+  }
+});
+
+const polarisAudio = document.getElementById("polarisAudio");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const audioSlider = document.getElementById("audioSlider");
+const audioTimeDisplay = document.getElementById("audioTimeDisplay");
+const recordArt = document.getElementById("recordArt");
+const musicTitle = document.getElementById("musicTitle");
+const musicArtist = document.getElementById("musicArtist");
+
+let recordRotation = 0;
+let recordInterval;
+let currentSongIndex = 0;
+
+const playlist = [
+  { title: "Never gonna give you up", artist: "Rick Astley", src: "./songs/Never gonna give you up.mp3" },
+  { title: "Island in the sun", artist: "Weezer", src: "./songs/island in the sun.mp3" },
+  { title: "sure thing", artist: "Miguel", src: "./songs/sure thing.mp3" },
+  { title: "Wonderwall", artist: "Oasis", src: "./songs/wonderwall.mp3" },
+  { title: "chicago", artist: "Michael Jackson", src: "./songs/chicago.mp3" }
+];
+
+function loadSong(index) {
+  polarisAudio.src = playlist[index].src;
+  musicTitle.innerText = playlist[index].title;
+  musicArtist.innerText = playlist[index].artist;
+  audioSlider.value = 0;
+  audioTimeDisplay.innerText = "0:00";
+}
+
+loadSong(currentSongIndex);
+
+function togglePlayPause() {
+  if (polarisAudio.paused) {
+    polarisAudio.play();
+    playPauseBtn.innerText = "⏸";
+    
+    recordInterval = setInterval(() => {
+      recordRotation += 1;
+      recordArt.style.transform = `rotate(${recordRotation}deg)`;
+    }, 20);
+  } else {
+    polarisAudio.pause();
+    playPauseBtn.innerText = "▶";
+    clearInterval(recordInterval);
+  }
+}
+
+function prevSong() {
+  currentSongIndex--;
+  if (currentSongIndex < 0) currentSongIndex = playlist.length - 1;
+  
+  loadSong(currentSongIndex);
+  if (playPauseBtn.innerText === "⏸") polarisAudio.play(); 
+}
+
+function nextSong() {
+  currentSongIndex++;
+  if (currentSongIndex > playlist.length - 1) currentSongIndex = 0;
+  
+  loadSong(currentSongIndex);
+  if (playPauseBtn.innerText === "⏸") polarisAudio.play();
+}
+
+polarisAudio.addEventListener("ended", nextSong);
+
+polarisAudio.addEventListener("timeupdate", () => {
+  const current = polarisAudio.currentTime;
+  const duration = polarisAudio.duration;
+  
+  if (!isNaN(duration)) {
+    audioSlider.value = (current / duration) * 100;
+    
+    const mins = Math.floor(current / 60);
+    const secs = Math.floor(current % 60).toString().padStart(2, '0');
+    audioTimeDisplay.innerText = `${mins}:${secs}`;
+  }
+});
+
+audioSlider.addEventListener("input", () => {
+  const duration = polarisAudio.duration;
+  if (!isNaN(duration)) {
+    polarisAudio.currentTime = (audioSlider.value / 100) * duration;
   }
 });
