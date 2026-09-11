@@ -11,6 +11,8 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Animations:** Smooth animations such as fade in and out of the windows and slide animation for the calendar added.
 * **Dynamic time & calendar:** A real-time taskbar clock that also opens an interactive calendar with navigation.
 * **Sound effects:** Interactive sound effects that play when you boot into and do various tasks in Polaris.
+* **Reactive wallpaper:** brand new wallpaper which moves around to give a lively feel and reacts to your cursor!
+* **Widgets:** New NASA APOD and analog clock widgets on the desktop, both of which are collapsible incase you need more space. 
 
 ## Apps
 
@@ -20,7 +22,9 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Timer:** A taskbar-integrated countdown tool to track your daily tasks.
 * **Tic-Tac-Toe:** A built-in classic mini-game to pass the time, now with a bot to play against if your alone!
 * **Weather:** A weather app powered by the open-meteo API, allowing to get real time temperatures and weather conditions.
-* **Music player:** A music player app with a bunch of old but gold songs to listen to! _(thanks roma)_
+* **Music player:** A music player app with a bunch of old but gold songs to listen to with a playlist! _(thanks roma)_
+* **Gallery:** A new app with a few pictures related to Polaris!
+* **Terminal:** A basic terminal with simple commands to test out.
 * **Easter egg:** Clicking on "Polaris-os" makes confetti!
 
 ## Tech Stack
@@ -28,7 +32,7 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * HTML5
 * JavaScript (Vanilla)
 * CSS3
-* APIs (open-meteo)
+* APIs (open-meteo, NASA APOD)
 
 ## Fixes
 
