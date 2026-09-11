@@ -2,7 +2,7 @@ const startupSound = new Audio('sfx/startup.mp3');
 const clickSound = new Audio('sfx/click.mp3');
 const calendarSound = new Audio('sfx/calendar.mp3');
 
-window.onload = function() {
+document.addEventListener("DOMContentLoaded", function() {
   let progress = 0;
   const loadingScreen = document.getElementById("loadingScreen");
   const loadingElements = document.getElementById("loadingElements");
@@ -50,7 +50,7 @@ window.onload = function() {
     starFill.style.height = progress + "%";
     loadingText.innerText = progress + "%";
   }, 40); 
-};
+});
 
 setInterval(function () {
   document.querySelector("#timeElement").innerHTML = new Date().toLocaleString();
