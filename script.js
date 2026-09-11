@@ -1,6 +1,6 @@
-const startupSound = new Audio('./startup.mp3');
-const clickSound = new Audio('./click.mp3');
-const calendarSound = new Audio('./calendar.mp3');
+const startupSound = new Audio('sfx/startup.mp3');
+const clickSound = new Audio('sfx/click.mp3');
+const calendarSound = new Audio('sfx/calendar.mp3');
 
 window.onload = function() {
   let progress = 0;
@@ -112,6 +112,10 @@ function openWindow(windowId) {
 
   setTimeout(() => {
     element.style.opacity = "1";
+    if (windowId === 'terminalWindow') {
+      const input = document.getElementById('terminalInput');
+      if (input) input.focus();
+    }
   }, 10);
 }
 
@@ -157,8 +161,12 @@ dragElement(document.getElementById("notesWindow"));
 dragElement(document.getElementById("musicWindow"));
 dragElement(document.getElementById("TimerWindow"));
 dragElement(document.getElementById("tictactoeWindow"));
+dragElement(document.getElementById("galleryWindow"));
+dragElement(document.getElementById("terminalWindow"));
 
 function dragElement(element) {
+  if (!element) return;
+  
   var initialX = 0, initialY = 0, currentX = 0, currentY = 0;
   var header = document.getElementById(element.id + "header");
 
@@ -462,15 +470,6 @@ function nextMonth() {
 
 buildCalendar();
 
-document.addEventListener('click', function(event) {
-  const isClickable = event.target.closest('button') || event.target.closest('[onclick]');
-  
-  if (isClickable) {
-    clickSound.currentTime = 0;
-    clickSound.play().catch(e => {});
-  }
-});
-
 const polarisAudio = document.getElementById("polarisAudio");
 const playPauseBtn = document.getElementById("playPauseBtn");
 const audioSlider = document.getElementById("audioSlider");
@@ -478,6 +477,7 @@ const audioTimeDisplay = document.getElementById("audioTimeDisplay");
 const recordArt = document.getElementById("recordArt");
 const musicTitle = document.getElementById("musicTitle");
 const musicArtist = document.getElementById("musicArtist");
+const playlistContainer = document.getElementById("playlistContainer");
 
 let recordRotation = 0;
 let recordInterval;
@@ -491,14 +491,63 @@ const playlist = [
   { title: "chicago", artist: "Michael Jackson", src: "./songs/chicago.mp3" }
 ];
 
+function renderPlaylist() {
+  if(!playlistContainer) return;
+  playlistContainer.innerHTML = "";
+  playlist.forEach((song, index) => {
+    const item = document.createElement("div");
+    item.innerText = `${song.title} - ${song.artist}`;
+    item.style.padding = "8px";
+    item.style.color = "white";
+    item.style.fontFamily = "'Courier New', Courier, monospace";
+    item.style.fontSize = "12px";
+    item.style.cursor = "pointer";
+    item.style.borderBottom = "1px solid rgba(181,126,220,0.3)";
+    item.style.borderRadius = "4px";
+    item.style.transition = "background 0.2s";
+    
+    item.onmouseenter = () => { if (currentSongIndex !== index) item.style.background = "rgba(181,126,220,0.2)"; };
+    item.onmouseleave = () => { if (currentSongIndex !== index) item.style.background = "transparent"; };
+
+    item.onclick = () => {
+      currentSongIndex = index;
+      loadSong(index);
+      polarisAudio.play();
+      playPauseBtn.innerText = "⏸";
+      
+      clearInterval(recordInterval);
+      recordInterval = setInterval(() => {
+        recordRotation += 1;
+        recordArt.style.transform = `rotate(${recordRotation}deg)`;
+      }, 20);
+    };
+    
+    playlistContainer.appendChild(item);
+  });
+}
+
 function loadSong(index) {
+  if(!polarisAudio) return;
   polarisAudio.src = playlist[index].src;
   musicTitle.innerText = playlist[index].title;
   musicArtist.innerText = playlist[index].artist;
   audioSlider.value = 0;
   audioTimeDisplay.innerText = "0:00";
+  
+  if (playlistContainer) {
+    Array.from(playlistContainer.children).forEach((child, i) => {
+      if (i === index) {
+        child.style.background = "rgba(181,126,220,0.5)"; 
+        child.style.fontWeight = "bold";
+      } else {
+        child.style.background = "transparent";
+        child.style.fontWeight = "normal";
+      }
+    });
+  }
 }
 
+renderPlaylist();
 loadSong(currentSongIndex);
 
 function togglePlayPause() {
@@ -520,7 +569,6 @@ function togglePlayPause() {
 function prevSong() {
   currentSongIndex--;
   if (currentSongIndex < 0) currentSongIndex = playlist.length - 1;
-  
   loadSong(currentSongIndex);
   if (playPauseBtn.innerText === "⏸") polarisAudio.play(); 
 }
@@ -528,29 +576,371 @@ function prevSong() {
 function nextSong() {
   currentSongIndex++;
   if (currentSongIndex > playlist.length - 1) currentSongIndex = 0;
-  
   loadSong(currentSongIndex);
   if (playPauseBtn.innerText === "⏸") polarisAudio.play();
 }
 
-polarisAudio.addEventListener("ended", nextSong);
-
-polarisAudio.addEventListener("timeupdate", () => {
-  const current = polarisAudio.currentTime;
-  const duration = polarisAudio.duration;
-  
-  if (!isNaN(duration)) {
-    audioSlider.value = (current / duration) * 100;
+if(polarisAudio) {
+  polarisAudio.addEventListener("ended", nextSong);
+  polarisAudio.addEventListener("timeupdate", () => {
+    const current = polarisAudio.currentTime;
+    const duration = polarisAudio.duration;
     
-    const mins = Math.floor(current / 60);
-    const secs = Math.floor(current % 60).toString().padStart(2, '0');
-    audioTimeDisplay.innerText = `${mins}:${secs}`;
+    if (!isNaN(duration)) {
+      audioSlider.value = (current / duration) * 100;
+      const mins = Math.floor(current / 60);
+      const secs = Math.floor(current % 60).toString().padStart(2, '0');
+      audioTimeDisplay.innerText = `${mins}:${secs}`;
+    }
+  });
+}
+
+if(audioSlider) {
+  audioSlider.addEventListener("input", () => {
+    const duration = polarisAudio.duration;
+    if (!isNaN(duration)) {
+      polarisAudio.currentTime = (audioSlider.value / 100) * duration;
+    }
+  });
+}
+
+const galleryImages = [
+  { src: "./gallery images/finding star.png", caption: "How to find the star" },
+  { src: "./gallery images/telescope image.png", caption: "Picture of Polaris taken by @ianlauerastro on instagram" },
+  { src: "./gallery images/close up.png", caption: "Close up view of Polaris" }
+];
+
+function preloadGalleryImages() {
+  galleryImages.forEach(img => {
+    const preloadImg = new Image();
+    preloadImg.src = img.src;
+  });
+}
+preloadGalleryImages();
+
+function initGallery() {
+  if(!galleryTrack) return;
+  galleryTrack.innerHTML = "";
+  galleryImages.forEach((img, i) => {
+    const div = document.createElement("div");
+    div.style.minWidth = "100%";
+    div.style.height = "100%";
+    div.style.backgroundSize = "cover";
+    div.style.backgroundPosition = "center";
+
+    const preloadImg = new Image();
+    preloadImg.onload = () => {
+      div.style.backgroundImage = `url('${img.src}')`;
+    };
+    preloadImg.src = img.src;
+
+    galleryTrack.appendChild(div);
+  });
+  updateGalleryView();
+}
+
+let currentGalleryIndex = 0;
+const galleryTrack = document.getElementById("galleryTrack");
+const galleryCaption = document.getElementById("galleryCaption");
+
+function slideGallery(direction) {
+  currentGalleryIndex += direction;
+  
+  if (currentGalleryIndex >= galleryImages.length) {
+    currentGalleryIndex = 0;
+  } 
+  else if (currentGalleryIndex < 0) {
+    currentGalleryIndex = galleryImages.length - 1;
   }
+  
+  updateGalleryView();
+}
+
+function updateGalleryView() {
+  if(!galleryTrack) return;
+  galleryTrack.style.transform = `translateX(-${currentGalleryIndex * 100}%)`;
+  galleryCaption.innerText = galleryImages[currentGalleryIndex].caption;
+}
+
+initGallery();
+
+let isApodOpen = true;
+const apodWidget = document.getElementById('apodWidget');
+const apodToggleBtn = document.getElementById('apodToggleBtn');
+
+function toggleApod() {
+  if (isApodOpen) {
+    apodWidget.style.left = "-300px";
+    apodWidget.style.boxShadow = "none";
+    apodToggleBtn.style.transform = "rotate(0deg)";
+  } else {
+    apodWidget.style.left = "0px";
+    apodWidget.style.boxShadow = "5px 0 25px rgba(181, 126, 220, 0.4)";
+    apodToggleBtn.style.transform = "rotate(180deg)";
+  }
+  isApodOpen = !isApodOpen;
+  
+  if(typeof clickSound !== 'undefined') {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e=>{});
+  }
+}
+
+async function fetchApod() {
+  const apiKey = "8NXdIUKNYlFNvAPOkaFBpyuUQKgFgJnnMKDGaLdz";
+  try {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const dateStr = yesterday.toISOString().split("T")[0];
+
+    const response = await fetch(`https://api.nasa.gov/planetary/apod?api_key=${apiKey}&date=${dateStr}`);
+    const data = await response.json();
+
+    if (!response.ok || data.error) {
+      throw new Error(data.error?.message || `HTTP ${response.status}`);
+    }
+
+    const [y, m, d] = data.date.split("-");
+    const apodPageUrl = `https://apod.nasa.gov/apod/ap${y.slice(2)}${m}${d}.html`;
+
+    document.getElementById('apodTitle').innerHTML =
+      `<a href="${apodPageUrl}" target="_blank" style="color:white; text-decoration:none;">${data.title}</a>`;
+    document.getElementById('apodDate').innerText = data.date;
+
+    const imgElement = document.getElementById('apodImg');
+    const videoBtn = document.getElementById('apodVideoBtn');
+    const videoFrame = document.getElementById('apodVideoFrame');
+
+    if (data.media_type === "image") {
+      imgElement.src = data.hdurl || data.url;
+      imgElement.style.display = "block";
+      imgElement.style.cursor = "pointer";
+      imgElement.onclick = () => window.open(apodPageUrl, "_blank");
+      videoFrame.style.display = "none";
+      videoBtn.style.display = "none";
+    } else {
+      imgElement.style.display = "none";
+      if (data.url && (data.url.includes("youtube.com") || data.url.includes("vimeo.com"))) {
+        videoFrame.src = data.url;
+        videoFrame.style.display = "block";
+      } else {
+        videoFrame.style.display = "none";
+      }
+      videoBtn.style.display = "block";
+      videoBtn.href = apodPageUrl;
+    }
+  } catch (error) {
+    console.error("APOD fetch failed:", error);
+    const titleObj = document.getElementById('apodTitle');
+    if (titleObj) titleObj.innerText = `Failed to load APOD: ${error.message}`;
+  }
+}
+fetchApod();
+
+let isClockOpen = true;
+const clockWidget = document.getElementById('clockWidget');
+const clockToggleBtn = document.getElementById('clockToggleBtn');
+
+function toggleClock() {
+  if (isClockOpen) {
+    clockWidget.style.left = "-220px";
+    clockWidget.style.boxShadow = "none";
+    clockToggleBtn.style.transform = "rotate(0deg)";
+  } else {
+    clockWidget.style.left = "0px";
+    clockWidget.style.boxShadow = "5px 0 25px rgba(181, 126, 220, 0.4)";
+    clockToggleBtn.style.transform = "rotate(180deg)";
+  }
+  isClockOpen = !isClockOpen;
+  
+  if(typeof clickSound !== 'undefined') {
+    clickSound.currentTime = 0;
+    clickSound.play().catch(e=>{});
+  }
+}
+
+function updateAnalogClock() {
+  const now = new Date();
+  const seconds = now.getSeconds();
+  const minutes = now.getMinutes();
+  const hours = now.getHours();
+  
+  const secondDegrees = (seconds / 60) * 360;
+  const minuteDegrees = ((minutes + seconds / 60) / 60) * 360;
+  const hourDegrees = ((hours + minutes / 60) / 12) * 360;
+  
+  const secHand = document.getElementById('secondHand');
+  const minHand = document.getElementById('minuteHand');
+  const hrHand = document.getElementById('hourHand');
+  
+  if(secHand) secHand.style.transform = `translateX(-50%) rotate(${secondDegrees}deg)`;
+  if(minHand) minHand.style.transform = `translateX(-50%) rotate(${minuteDegrees}deg)`;
+  if(hrHand) hrHand.style.transform = `translateX(-50%) rotate(${hourDegrees}deg)`;
+}
+setInterval(updateAnalogClock, 1000);
+updateAnalogClock();
+
+const canvas = document.getElementById("spaceCanvas");
+const ctx = canvas.getContext("2d");
+let width, height;
+let particles = [];
+let mouse = { x: -1000, y: -1000 };
+
+function resizeCanvas() {
+  width = window.innerWidth;
+  height = window.innerHeight;
+  canvas.width = width;
+  canvas.height = height;
+}
+
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+window.addEventListener("mousemove", (e) => {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
 });
 
-audioSlider.addEventListener("input", () => {
-  const duration = polarisAudio.duration;
-  if (!isNaN(duration)) {
-    polarisAudio.currentTime = (audioSlider.value / 100) * duration;
+window.addEventListener("mouseout", () => {
+  mouse.x = -1000;
+  mouse.y = -1000;
+});
+
+class Particle {
+  constructor() {
+    this.x = Math.random() * width;
+    this.y = Math.random() * height;
+    this.size = Math.random() * 2 + 0.5;
+    this.baseX = this.x;
+    this.baseY = this.y;
+    this.density = (Math.random() * 30) + 1;
+    this.vx = (Math.random() - 0.5) * 0.5;
+    this.vy = (Math.random() - 0.5) * 0.5;
   }
+  
+  draw() {
+    ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+    ctx.closePath();
+    ctx.fill();
+  }
+  
+  update() {
+    this.x += this.vx;
+    this.y += this.vy;
+    
+    if (this.x > width) this.x = 0;
+    if (this.x < 0) this.x = width;
+    if (this.y > height) this.y = 0;
+    if (this.y < 0) this.y = height;
+
+    let dx = mouse.x - this.x;
+    let dy = mouse.y - this.y;
+    let distance = Math.sqrt(dx * dx + dy * dy);
+    let forceDirectionX = dx / distance;
+    let forceDirectionY = dy / distance;
+    let maxDistance = 120;
+    let force = (maxDistance - distance) / maxDistance;
+    let directionX = forceDirectionX * force * this.density;
+    let directionY = forceDirectionY * force * this.density;
+
+    if (distance < maxDistance) {
+      this.x -= directionX;
+      this.y -= directionY;
+    }
+  }
+}
+
+function initParticles() {
+  particles = [];
+  for (let i = 0; i < 200; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, width, height);
+  for (let i = 0; i < particles.length; i++) {
+    particles[i].update();
+    particles[i].draw();
+  }
+  requestAnimationFrame(animateParticles);
+}
+
+initParticles();
+animateParticles();
+
+const termIn = document.getElementById("terminalInput");
+const termOut = document.getElementById("terminalOutput");
+
+if (termIn && termOut) {
+  termIn.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      const commandLine = termIn.value.trim();
+      termIn.value = "";
+      
+      if (commandLine === "") return;
+
+      const outputLine = document.createElement("div");
+      outputLine.innerHTML = `<span style="color: rgb(181,126,220);">admin@polaris:~$</span> ${commandLine}`;
+      termOut.appendChild(outputLine);
+
+      const args = commandLine.split(" ");
+      const cmd = args[0].toLowerCase();
+      
+      const responseLine = document.createElement("div");
+      responseLine.style.color = "#7cbeff";
+      responseLine.style.marginBottom = "5px";
+
+      switch (cmd) {
+        case "help":
+          responseLine.innerHTML = "Available commands:<br>help - Show this message<br>clear - Clear terminal<br>date - Show current date/time<br>whoami - Show current user<br>echo [text] - Print text<br>open [app] - Open an app (calc, music, weather, notes, tictactoe, gallery, terminal)";
+          break;
+        case "clear":
+          termOut.innerHTML = "";
+          return;
+        case "date":
+          responseLine.innerText = new Date().toString();
+          break;
+        case "whoami":
+          responseLine.innerText = "admin (Kai)";
+          break;
+        case "echo":
+          responseLine.innerText = args.slice(1).join(" ");
+          break;
+        case "open":
+          if (args[1]) {
+            const appMap = {
+              "calc": "calcWindow",
+              "music": "musicWindow",
+              "weather": "weatherWindow",
+              "notes": "notesWindow",
+              "tictactoe": "tictactoeWindow",
+              "gallery": "galleryWindow",
+              "terminal": "terminalWindow"
+            };
+            const targetWindow = appMap[args[1].toLowerCase()];
+            if (targetWindow) {
+              openWindow(targetWindow);
+              responseLine.innerText = `Opened ${args[1]}.`;
+            } else {
+              responseLine.innerText = `App not found: ${args[1]}`;
+            }
+          } else {
+            responseLine.innerText = "Usage: open [app]";
+          }
+          break;
+        default:
+          responseLine.innerText = `Command not found: ${cmd}`;
+      }
+
+      termOut.appendChild(responseLine);
+      termOut.scrollTop = termOut.scrollHeight;
+    }
+  });
+}
+
+document.getElementById('terminalWindow').addEventListener('mousedown', () => {
+  setTimeout(() => document.getElementById('terminalInput').focus(), 0);
 });
