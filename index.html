@@ -7,31 +7,44 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Space Background Canvas -->
   <canvas id="spaceCanvas" class="bg-canvas"></canvas>
 
   <!-- Loading Screen -->
   <div id="loadingScreen" class="loading-screen">
-    <div id="loadingElements" class="loading-elements">
-      <div class="loading-svg-container">
-        <svg class="loading-svg-bg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-        </svg>
-        <div id="starFill" class="loading-svg-fill">
-          <svg class="loading-svg-fg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-          </svg>
-        </div>
-      </div>
-      <div id="loadingText" class="loading-text">0%</div>
-      <div class="loading-subtext">Booting Polaris-OS...</div>
+    <div class="loading-bg-elements">
+      <div class="tech-panel tp-top"></div>
+      <div class="tech-panel tp-bottom"></div>
+      <div class="tech-panel tp-left"></div>
+      <div class="tech-panel tp-right"></div>
+      
+      <div class="gear-wrapper gw-tl"><div class="bg-gear-outer"></div><div class="bg-gear-inner"></div><div class="bg-gear-solid"></div></div>
+      <div class="gear-wrapper gw-tr"><div class="bg-gear-outer" style="animation-direction: reverse;"></div><div class="bg-gear-inner" style="animation-direction: normal;"></div><div class="bg-gear-solid"></div></div>
+      <div class="gear-wrapper gw-bl"><div class="bg-gear-outer" style="animation-direction: reverse;"></div><div class="bg-gear-inner" style="animation-direction: normal;"></div><div class="bg-gear-solid"></div></div>
+      <div class="gear-wrapper gw-br"><div class="bg-gear-outer"></div><div class="bg-gear-inner"></div><div class="bg-gear-solid"></div></div>
     </div>
+
+    <!-- Center Loader HUD -->
+    <div id="loadingElements" class="loading-elements">
+      <div class="scifi-loader">
+        <div class="loader-gear outer-gear"></div>
+        <div class="loader-gear middle-gear"></div>
+        <div class="loader-gear inner-ring"></div>
+        <div class="loader-star">⭐</div>
+      </div>
+      <div class="loading-hud">
+        <div class="hud-text">BOOTING POLARIS<span class="blinking-cursor">_</span></div>
+        <div class="hud-progress-bar">
+          <div id="hudFill" class="hud-fill"></div>
+        </div>
+        <div id="loadingText" class="loading-progress-text">0%</div>
+      </div>
+    </div>
+    
     <div id="welcomeMessage" class="welcome-message" style="display: none;">
-      Welcome to Polaris-OS
+      POLARIS-OS v3.2
+      <div style="font-size: 15px; opacity: 0.75; letter-spacing: 1px; margin-top: 10px;">[ CLICK ANYWHERE TO START ]</div>
     </div>
   </div>
-
-  <!-- Desktop Label -->
   <div class="desktop-title" onclick="triggerStarConfetti()">
     <h1>Polaris-OS</h1>
     <p>click here for confetti</p>
@@ -65,41 +78,25 @@
 
   <!-- Taskbar -->
   <div id="taskbar" class="taskbar">
+    <div class="taskbar-spacer"></div>
+    
     <div id="taskbarApps" class="taskbar-apps">
-
-      <div class="taskbar-icon" data-tooltip="Info" onclick="toggleWindow('infoWindow')">
-        <img src="./icons/infoicon.png" alt="Info">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Notes" onclick="toggleWindow('notesWindow')">
-        <img src="./icons/notepad.png" alt="Notes">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Calculator" onclick="toggleWindow('calcWindow')">
-        <img src="./icons/calculator.png" alt="Calculator">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Timer" onclick="toggleWindow('TimerWindow')">
-        <img src="./icons/timer.png" alt="Timer">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Tic Tac Toe" onclick="toggleWindow('tictactoeWindow')">
-        <img src="./icons/tictactoe.png" alt="Tic Tac Toe">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Weather" onclick="toggleWindow('weatherWindow')">
-        <img src="./icons/weather.png" alt="Weather">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Music" onclick="toggleWindow('musicWindow')">
-        <img src="./icons/music.png" alt="Music">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Gallery" onclick="toggleWindow('galleryWindow')">
-        <img src="./icons/gallery.png" alt="Gallery">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Terminal" onclick="toggleWindow('terminalWindow')">
-        <img src="./icons/terminal.png" alt="Terminal">
-      </div>
-      <div class="taskbar-icon" data-tooltip="Settings" onclick="toggleWindow('settingsWindow')">
-        <img src="./icons/settings.png" alt="Settings">
-      </div>
+      <div class="taskbar-icon" data-tooltip="Info" onclick="toggleWindow('infoWindow')"><img src="./icons/infoicon.png" alt="Info"></div>
+      <div class="taskbar-icon" data-tooltip="Notes" onclick="toggleWindow('notesWindow')"><img src="./icons/notepad.png" alt="Notes"></div>
+      <div class="taskbar-icon" data-tooltip="Calculator" onclick="toggleWindow('calcWindow')"><img src="./icons/calculator.png" alt="Calculator"></div>
+      <div class="taskbar-icon" data-tooltip="Timer" onclick="toggleWindow('TimerWindow')"><img src="./icons/timer.png" alt="Timer"></div>
+      <div class="taskbar-icon" data-tooltip="Tic Tac Toe" onclick="toggleWindow('tictactoeWindow')"><img src="./icons/tictactoe.png" alt="Tic Tac Toe"></div>
+      <div class="taskbar-icon" data-tooltip="Weather" onclick="toggleWindow('weatherWindow')"><img src="./icons/weather.png" alt="Weather"></div>
+      <div class="taskbar-icon" data-tooltip="Music" onclick="toggleWindow('musicWindow')"><img src="./icons/music.png" alt="Music"></div>
+      <div class="taskbar-icon" data-tooltip="Gallery" onclick="toggleWindow('galleryWindow')"><img src="./icons/gallery.png" alt="Gallery"></div>
+      <div class="taskbar-icon" data-tooltip="Dictionary" onclick="toggleWindow('dictWindow')"><img src="./icons/dictionary.png" alt="Dictionary"></div>
+      <div class="taskbar-icon" data-tooltip="Terminal" onclick="toggleWindow('terminalWindow')"><img src="./icons/terminal.png" alt="Terminal"></div>
+      <div class="taskbar-icon" data-tooltip="Settings" onclick="toggleWindow('settingsWindow')"><img src="./icons/settings.png" alt="Settings"></div>
     </div>
     
-    <button id="timeElement" class="time-element">Time</button>
+    <div class="taskbar-time-container">
+      <button id="timeElement" class="time-element">Time</button>
+    </div>
   </div>
 
   <!-- CALENDAR WINDOW -->
@@ -147,13 +144,6 @@
     
     <div class="settings-section">
       <h3 class="settings-label">Interface</h3>
-      <div class="settings-row">
-        <label>Taskbar Alignment</label>
-        <select id="taskbarAlign" class="os-select">
-          <option value="flex-start">Left</option>
-          <option value="center" selected>Center</option>
-        </select>
-      </div>
       <div class="settings-row">
         <label>Clock Format</label>
         <select id="clockFormat" class="os-select">
@@ -208,6 +198,21 @@
     </div>
     <div id="weatherResult" class="text-center text-white font-mono">
       <p>Type a location to search.</p>
+    </div>
+  </div>
+
+  <!-- DICTIONARY WINDOW -->
+  <div id="dictWindow" class="os-window dict-window" onmousedown="bringToFront(this)">
+    <div id="dictWindowheader" class="os-window-header">
+      <button onclick="closeWindow('dictWindow')" class="btn-close">X</button>
+    </div>
+    <h2 class="window-title">Dictionary</h2>
+    <div class="flex-row gap-5 mb-15">
+      <input type="text" id="dictInput" class="os-input flex-1" placeholder="Search a word...">
+      <button onclick="fetchDictionary()" class="os-btn bg-purple-light">Lookup</button>
+    </div>
+    <div id="dictResult" class="dict-result-area">
+      <p class="text-center text-white font-mono">Type a word to search.</p>
     </div>
   </div>
 

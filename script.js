@@ -1,4 +1,4 @@
-// 1. GLOBAL AUDIO & INITIALIZATION
+// GLOBAL AUDIO & INITIALIZATION
 const startupSound = new Audio('sfx/startup.mp3');
 const clickSound = new Audio('sfx/click.mp3');
 const calendarSound = new Audio('sfx/calendar.mp3');
@@ -8,8 +8,12 @@ document.addEventListener("DOMContentLoaded", function() {
   const loadingScreen = document.getElementById("loadingScreen");
   const loadingElements = document.getElementById("loadingElements");
   const welcomeMessage = document.getElementById("welcomeMessage");
-  const starFill = document.getElementById("starFill");
+  const hudFill = document.getElementById("hudFill");
   const loadingText = document.getElementById("loadingText");
+
+  setTimeout(() => {
+    loadingScreen.classList.add("active");
+  }, 50);
 
   const loadingInterval = setInterval(() => {
     progress += Math.floor(Math.random() * 5) + 1; 
@@ -20,11 +24,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       setTimeout(() => {
         loadingElements.style.display = "none";
-        welcomeMessage.innerHTML = `
-          <div style="font-size: 28px; margin-bottom: 10px;">Welcome to Polaris-OS</div>
-          <div style="font-size: 15px; opacity: 0.75; letter-spacing: 1px;">[ Click anywhere to start. ]</div>
-        `;
-        welcomeMessage.style.display = "block";
+        welcomeMessage.style.display = "flex";
         
         setTimeout(() => welcomeMessage.style.opacity = "1", 50);
         loadingScreen.style.cursor = "pointer";
@@ -33,15 +33,25 @@ document.addEventListener("DOMContentLoaded", function() {
           startupSound.currentTime = 0;
           startupSound.play().catch(e => console.log(e));
 
-          loadingScreen.style.opacity = "0";
-          loadingScreen.style.transform = "scale(1.1)"; 
+          loadingScreen.classList.add("exiting");
+          
+          welcomeMessage.style.opacity = "0";
 
-          setTimeout(() => loadingScreen.style.display = "none", 800);
+          setTimeout(() => {
+            loadingScreen.style.opacity = "0";
+            loadingScreen.style.transform = "scale(1.1)"; 
+
+            setTimeout(() => {
+              loadingScreen.style.display = "none";
+            }, 800);
+          }, 600);
+          
         }, { once: true });
 
       }, 400);
     }
-    starFill.style.height = progress + "%";
+    
+    hudFill.style.width = progress + "%";
     loadingText.innerText = progress + "%";
   }, 40); 
 });
@@ -62,8 +72,8 @@ function triggerStarConfetti() {
   }
 }
 
-// 2. WINDOW MANAGEMENT & DRAGGING LOGIC
-let zIndexCounter = 1;
+// WINDOW MANAGEMENT & DRAGGING LOGIC
+let zIndexCounter = 20;
 
 function bringToFront(element) {
   zIndexCounter++;
@@ -136,13 +146,12 @@ function dragElement(element) {
   }
 }
 
-// drag logic
-['infoWindow', 'weatherWindow', 'calcWindow', 'notesWindow', 'musicWindow', 'TimerWindow', 'tictactoeWindow', 'galleryWindow', 'terminalWindow', 'settingsWindow'].forEach(id => {
+// drag logic to all windows
+['infoWindow', 'weatherWindow', 'calcWindow', 'notesWindow', 'musicWindow', 'TimerWindow', 'tictactoeWindow', 'galleryWindow', 'terminalWindow', 'settingsWindow', 'dictWindow'].forEach(id => {
   dragElement(document.getElementById(id));
 });
 
-
-// 3. SYSTEM SETTINGS
+//SYSTEM SETTINGS
 const sysSettings = {
   clock24: false,
   termUser: "admin",
@@ -183,16 +192,13 @@ document.getElementById('particleDist')?.addEventListener('input', (e) => {
   document.getElementById('particleDistVal').innerText = sysSettings.particleDist;
 });
 
-document.getElementById('taskbarAlign')?.addEventListener('change', (e) => {
-  document.getElementById('taskbarApps').style.justifyContent = e.target.value;
-});
-
 document.getElementById('showDesktopTitle')?.addEventListener('change', (e) => {
   const titleEl = document.querySelector('.desktop-title');
   if (titleEl) {
     titleEl.style.display = e.target.checked ? 'block' : 'none';
   }
 });
+
 document.getElementById('clockFormat')?.addEventListener('change', (e) => {
   sysSettings.clock24 = e.target.value === "24";
 });
@@ -203,7 +209,7 @@ document.getElementById('termUser')?.addEventListener('input', (e) => {
 });
 
 
-// 4. BACKGROUND CANVAS (SPACE PARTICLES)
+// BACKGROUND CANVAS (SPACE PARTICLES)
 const canvas = document.getElementById("spaceCanvas");
 const ctx = canvas.getContext("2d");
 let width, height;
@@ -235,6 +241,7 @@ class Particle {
     ctx.fillStyle = "rgba(255, 255, 255, 0.8)";
     ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.closePath(); ctx.fill();
   }
+  
   update() {
     this.x += this.vx * sysSettings.particleSpeed; 
     this.y += this.vy * sysSettings.particleSpeed;
@@ -244,6 +251,7 @@ class Particle {
 
     let dx = mouse.x - this.x; let dy = mouse.y - this.y;
     let distance = Math.sqrt(dx * dx + dy * dy);
+    if (distance === 0) return;
     let forceDirectionX = dx / distance; let forceDirectionY = dy / distance;
     
     let maxDistance = sysSettings.particleDist;
@@ -269,7 +277,7 @@ function animateParticles() {
 initParticles();
 animateParticles();
 
-// 5. DESKTOP WIDGETS (CLOCK, TIME, CALENDAR, APOD)
+//DESKTOP WIDGETS (CLOCK, TIME, CALENDAR, APOD)
 
 // Digital Time on Taskbar
 setInterval(() => {
@@ -417,7 +425,51 @@ async function fetchApod() {
 }
 fetchApod();
 
-// 6. APPLICATIONS LOGIC
+// APPLICATIONS LOGIC
+
+// Dictionary App
+document.getElementById("dictInput")?.addEventListener("keypress", function(event) {
+  if (event.key === "Enter") { event.preventDefault(); fetchDictionary(); }
+});
+
+async function fetchDictionary(customWord) {
+  const word = (typeof customWord === "string") ? customWord : document.getElementById("dictInput").value.trim();
+  const resultDiv = document.getElementById("dictResult");
+  if (!word) return;
+  
+  if (typeof customWord !== "string") resultDiv.innerHTML = "<p class='text-center'>Searching...</p>";
+
+  try {
+    const res = await fetch(`https://api.datamuse.com/words?sp=${encodeURIComponent(word)}&md=d&max=1`);
+    if (!res.ok) {
+      resultDiv.innerHTML = "<p class='text-center'>Network error.</p>";
+      return;
+    }
+    
+    const data = await res.json();
+    
+    if (data.length === 0 || !data[0].defs) {
+      resultDiv.innerHTML = "<p class='text-center'>Word not found.</p>";
+      return;
+    }
+    
+    const entry = data[0];
+    let html = `<h3 class="dict-word">${entry.word}</h3><ul>`;
+
+    entry.defs.slice(0, 3).forEach(def => {
+      const parts = def.split('\t');
+      const pos = parts.length > 1 ? `<span class="dict-pos">[${parts[0]}]</span> ` : '';
+      const definition = parts.length > 1 ? parts[1] : parts[0];
+      html += `<li class="dict-def">${pos}${definition}</li>`;
+    });
+
+    html += `</ul>`;
+    resultDiv.innerHTML = html;
+    document.getElementById("dictInput").value = word;
+  } catch (err) {
+    resultDiv.innerHTML = "<p class='text-center'>Error fetching definition.</p>";
+  }
+}
 
 // Weather App
 document.getElementById("weatherInput")?.addEventListener("keypress", function(event) {
@@ -584,7 +636,11 @@ const playlist = [
   { title: "Island in the sun", artist: "Weezer", src: "./songs/island in the sun.mp3" },
   { title: "sure thing", artist: "Miguel", src: "./songs/sure thing.mp3" },
   { title: "Wonderwall", artist: "Oasis", src: "./songs/wonderwall.mp3" },
-  { title: "chicago", artist: "Michael Jackson", src: "./songs/chicago.mp3" }
+  { title: "chicago", artist: "Michael Jackson", src: "./songs/chicago.mp3" },
+  { title: "Shape of You", artist: "Ed Sheeran", src: "./songs/shape of you.mp3" },
+  { title: "Blinding Lights", artist: "The Weeknd", src: "./songs/blinding lights.mp3" },
+  { title: "Levitating", artist: "Dua Lipa", src: "./songs/levitating.mp3" },
+  { title: "like a tattoo", artist: "Sade", src: "./songs/like a tattoo.mp3" }
 ];
 
 function renderPlaylist() {
@@ -754,19 +810,33 @@ if (termIn && termOut) {
       responseLine.style.marginBottom = "5px";
 
       switch (cmd) {
-        case "help": responseLine.innerHTML = "Available commands:<br>help - Show this message<br>clear - Clear terminal<br>date - Show current date/time<br>whoami - Show current user<br>echo [text] - Print text<br>open [app] - Open an app (calc, music, weather, notes, tictactoe, gallery, terminal, settings)"; break;
+        case "help": 
+          responseLine.innerHTML = "Available commands:<br>help - Show this message<br>clear - Clear terminal<br>date - Show current date/time<br>whoami - Show current user<br>echo [text] - Print text<br>open [app] - Open an app (calc, music, weather, notes, tictactoe, gallery, terminal, settings, dictionary)<br>define [word] - Lookup definition"; 
+          break;
         case "clear": termOut.innerHTML = ""; return;
         case "date": responseLine.innerText = new Date().toString(); break;
         case "whoami": responseLine.innerText = `${sysSettings.termUser} (Polaris Admin)`; break;
         case "echo": responseLine.innerText = args.slice(1).join(" "); break;
-        case "open":
+        case "define": {
+          const searchWord = args.slice(1).join(" ");
+          if (!searchWord) { 
+            responseLine.innerText = "Usage: define [word]"; 
+          } else { 
+            openWindow('dictWindow'); 
+            fetchDictionary(searchWord);
+            responseLine.innerText = `Looking up "${searchWord}"...`;
+          }
+          break;
+        }
+        case "open": {
           if (args[1]) {
-            const appMap = { "calc": "calcWindow", "music": "musicWindow", "weather": "weatherWindow", "notes": "notesWindow", "tictactoe": "tictactoeWindow", "gallery": "galleryWindow", "terminal": "terminalWindow", "settings": "settingsWindow" };
+            const appMap = { "calc": "calcWindow", "music": "musicWindow", "weather": "weatherWindow", "notes": "notesWindow", "tictactoe": "tictactoeWindow", "gallery": "galleryWindow", "terminal": "terminalWindow", "settings": "settingsWindow", "dictionary": "dictWindow" };
             const targetWindow = appMap[args[1].toLowerCase()];
             if (targetWindow) { openWindow(targetWindow); responseLine.innerText = `Opened ${args[1]}.`; }
             else { responseLine.innerText = `App not found: ${args[1]}`; }
           } else { responseLine.innerText = "Usage: open [app]"; }
           break;
+        }
         default: responseLine.innerText = `Command not found: ${cmd}`;
       }
       termOut.appendChild(responseLine);
