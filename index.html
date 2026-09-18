@@ -92,6 +92,7 @@
       <div class="taskbar-icon" data-tooltip="Dictionary" onclick="toggleWindow('dictWindow')"><img src="./icons/dictionary.png" alt="Dictionary"></div>
       <div class="taskbar-icon" data-tooltip="Terminal" onclick="toggleWindow('terminalWindow')"><img src="./icons/terminal.png" alt="Terminal"></div>
       <div class="taskbar-icon" data-tooltip="Settings" onclick="toggleWindow('settingsWindow')"><img src="./icons/settings.png" alt="Settings"></div>
+      <div class="taskbar-icon" data-tooltip="Achievements" onclick="toggleWindow('achievementsWindow')"><img src="./icons/achievements.png" alt="Achievements"></div>
     </div>
     
     <div class="taskbar-time-container">
@@ -341,6 +342,16 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <!-- ACHIEVEMENTS WINDOW -->
+ <div id="achievementsWindow" class="os-window achievements-window" onmousedown="bringToFront(this)">
+   <div id="achievementsWindowheader" class="os-window-header">
+     <button onclick="closeWindow('achievementsWindow')" class="btn-close">X</button>
+   </div>
+   <h2 class="window-title">Achievements</h2>
+   <div id="achievementsList" class="achievements-list"></div>
+ </div>
+ <div id="achievementToast" class="achievement-toast"></div>
+ 
+ <script src="script.js"></script>
 </body>
 </html>

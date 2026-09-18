@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function triggerStarConfetti() {
+  unlockAchievement('confetti');
   const numStars = 40; 
   const emojis = ['⭐', '✨', '🌟'];
   for (let i = 0; i < numStars; i++) {
@@ -97,6 +98,10 @@ function openWindow(windowId) {
   element.style.display = "block";
   element.style.transition = "opacity 0.3s ease-in-out";
   bringToFront(element);
+
+  openedApps.add(windowId);
+  saveAchievementState();
+  if (allAppIds.every(id => openedApps.has(id))) unlockAchievement('explorer');
 
   setTimeout(() => {
     element.style.opacity = "1";
@@ -147,7 +152,7 @@ function dragElement(element) {
 }
 
 // drag logic to all windows
-['infoWindow', 'weatherWindow', 'calcWindow', 'notesWindow', 'musicWindow', 'TimerWindow', 'tictactoeWindow', 'galleryWindow', 'terminalWindow', 'settingsWindow', 'dictWindow'].forEach(id => {
+['infoWindow', 'weatherWindow', 'calcWindow', 'notesWindow', 'musicWindow', 'TimerWindow', 'tictactoeWindow', 'galleryWindow', 'terminalWindow', 'settingsWindow', 'dictWindow','achievementsWindow'].forEach(id => {
   dragElement(document.getElementById(id));
 });
 
@@ -169,6 +174,7 @@ function hexToRgb(hex) {
 
 document.getElementById('themeColorPicker')?.addEventListener('input', (e) => {
   document.documentElement.style.setProperty('--theme-rgb', hexToRgb(e.target.value));
+  unlockAchievement('painter');
 });
 
 document.getElementById('resetColorBtn')?.addEventListener('click', () => {
@@ -433,6 +439,9 @@ document.getElementById("dictInput")?.addEventListener("keypress", function(even
 });
 
 async function fetchDictionary(customWord) {
+  dictLookupCount++;
+  saveAchievementState();
+  if (dictLookupCount >= 5) unlockAchievement('curious');
   const word = (typeof customWord === "string") ? customWord : document.getElementById("dictInput").value.trim();
   const resultDiv = document.getElementById("dictResult");
   if (!word) return;
@@ -608,6 +617,7 @@ function checkWin() {
     const [a, b, c] = winningConditions[i];
     if (tttBoard[a] && tttBoard[a] === tttBoard[b] && tttBoard[a] === tttBoard[c]) roundWon = true;
   }
+  if (roundWon && isBotMode && currentPlayer === "🌎") unlockAchievement('champion');
   if (roundWon) { document.getElementById("tttStatus").innerText = `Player ${currentPlayer} Wins!`; gameActive = false; return; }
   if (!tttBoard.includes("")) { document.getElementById("tttStatus").innerText = "It's a Draw!"; gameActive = false; return; }
   currentPlayer = currentPlayer === "🌎" ? "🌕" : "🌎";
@@ -847,3 +857,60 @@ if (termIn && termOut) {
 document.getElementById('terminalWindow')?.addEventListener('mousedown', () => {
   setTimeout(() => document.getElementById('terminalInput').focus(), 0);
 });
+
+// ACHIEVEMENTS SYSTEM
+const achievementDefs = [
+  { id: "explorer",   icon: "🗺️", name: "Explorer",        desc: "Open every app at least once" },
+  { id: "painter",    icon: "🎨", name: "Interior Designer", desc: "Change the accent color" },
+  { id: "champion",   icon: "🏆", name: "Undefeated",        desc: "Beat the Tic-Tac-Toe bot" },
+  { id: "confetti",   icon: "🌟", name: "Party Starter",     desc: "Trigger star confetti" },
+  { id: "nightowl",   icon: "🌌", name: "Deep Space",        desc: "Use Polaris after midnight" },
+  { id: "curious",    icon: "📖", name: "Curious Mind",      desc: "Look up 5 dictionary words" },
+];
+
+const allAppIds = ['infoWindow','notesWindow','calcWindow','TimerWindow','tictactoeWindow','weatherWindow','musicWindow','galleryWindow','dictWindow','terminalWindow','settingsWindow'];
+
+let unlockedAchievements = JSON.parse(localStorage.getItem('polarisAchievements') || '[]');
+let openedApps = new Set(JSON.parse(localStorage.getItem('polarisOpenedApps') || '[]'));
+let dictLookupCount = parseInt(localStorage.getItem('polarisDictCount') || '0');
+
+function saveAchievementState() {
+  localStorage.setItem('polarisAchievements', JSON.stringify(unlockedAchievements));
+  localStorage.setItem('polarisOpenedApps', JSON.stringify([...openedApps]));
+  localStorage.setItem('polarisDictCount', dictLookupCount.toString());
+}
+
+function unlockAchievement(id) {
+  if (unlockedAchievements.includes(id)) return;
+  unlockedAchievements.push(id);
+  saveAchievementState();
+  const def = achievementDefs.find(a => a.id === id);
+  if (def) showAchievementToast(def);
+  renderAchievements();
+}
+
+function showAchievementToast(def) {
+  const toast = document.getElementById('achievementToast');
+  if (!toast) return;
+  toast.innerHTML = `<span class="achievement-icon">${def.icon}</span>
+    <div><div class="achievement-name">Achievement Unlocked!</div>
+    <div class="achievement-desc">${def.name} — ${def.desc}</div></div>`;
+  toast.classList.add('show');
+  if(typeof clickSound !== 'undefined') { clickSound.currentTime = 0; clickSound.play().catch(()=>{}); }
+  setTimeout(() => toast.classList.remove('show'), 3500);
+}
+
+function renderAchievements() {
+  const list = document.getElementById('achievementsList');
+  if (!list) return;
+  list.innerHTML = achievementDefs.map(a => {
+    const unlocked = unlockedAchievements.includes(a.id);
+    return `<div class="achievement-item ${unlocked ? '' : 'locked'}">
+      <span class="achievement-icon">${a.icon}</span>
+      <div><p class="achievement-name">${a.name}</p><p class="achievement-desc">${a.desc}</p></div>
+    </div>`;
+  }).join('');
+}
+renderAchievements();
+
+if (new Date().getHours() >= 0 && new Date().getHours() < 5) unlockAchievement('nightowl');
