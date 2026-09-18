@@ -4,7 +4,7 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 
 ## Features
 
-* **Custom booting sequence:** An animated star-fill loading screen which fades away to reveal the desktop.
+* **Custom booting sequence:** An animated loading screen which fades away to reveal the desktop.
 * **Draggable Windows:** Fully interactive window components that can be moved across the workspace.
 * **Custom Taskbar:** A taskbar layout for managing open windows, accessing applications, and navigating the interface.
 * **Space-Themed Environment:** A stylized desktop environment visually inspired by the star Polaris.
@@ -25,6 +25,7 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Music player:** A music player app with a bunch of old but gold songs to listen to with a playlist! _(thanks roma)_
 * **Gallery:** A new app with a few pictures related to Polaris!
 * **Terminal:** A basic terminal with simple commands to test out.
+* **Dictionary:** A dictionary which gives your the definitions of any word!
 * **Easter egg:** Clicking on "Polaris-os" makes confetti!
 
 ## Tech Stack
@@ -32,9 +33,9 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * HTML5
 * JavaScript (Vanilla)
 * CSS3
-* APIs (open-meteo, NASA APOD)
+* APIs (open-meteo, NASA APOD, openmuse)
 
-## Fixes
+## Fixes & changes
 
 * Fixed issue of projects link not working.
 * Added a higher resolution image for the background.
