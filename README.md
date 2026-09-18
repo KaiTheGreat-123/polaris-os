@@ -26,6 +26,7 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * **Gallery:** A new app with a few pictures related to Polaris!
 * **Terminal:** A basic terminal with simple commands to test out.
 * **Dictionary:** A dictionary which gives your the definitions of any word!
+* **Achievements:** An achievements app that has 5 achievements that are unlockable by doing different tasks on Polaris!
 * **Easter egg:** Clicking on "Polaris-os" makes confetti!
 
 ## Tech Stack
