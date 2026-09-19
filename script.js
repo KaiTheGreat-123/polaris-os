@@ -408,13 +408,14 @@ async function fetchApod() {
     const imgElement = document.getElementById('apodImg');
     const videoBtn = document.getElementById('apodVideoBtn');
     const videoFrame = document.getElementById('apodVideoFrame');
-
+    
     if (data.media_type === "image") {
-      imgElement.src = data.hdurl || data.url;
-      imgElement.style.display = "block";
-      imgElement.style.cursor = "pointer";
-      imgElement.onclick = () => window.open(apodPageUrl, "_blank");
-      videoFrame.style.display = "none"; videoBtn.style.display = "none";
+     imgElement.src = data.url;
+     imgElement.loading = "lazy";
+     imgElement.style.display = "block";
+     imgElement.style.cursor = "pointer";
+     imgElement.onclick = () => window.open(data.hdurl || apodPageUrl, "_blank");
+     videoFrame.style.display = "none"; videoBtn.style.display = "none";
     } else {
       imgElement.style.display = "none";
       if (data.url && (data.url.includes("youtube.com") || data.url.includes("vimeo.com"))) {
