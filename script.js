@@ -151,7 +151,7 @@ function dragElement(element) {
   }
 }
 
-// drag logic to all windows
+// drag logic to all windows  
 ['infoWindow', 'weatherWindow', 'calcWindow', 'notesWindow', 'musicWindow', 'TimerWindow', 'tictactoeWindow', 'galleryWindow', 'terminalWindow', 'settingsWindow', 'dictWindow','achievementsWindow'].forEach(id => {
   dragElement(document.getElementById(id));
 });
@@ -165,6 +165,76 @@ const sysSettings = {
   particleCount: 200
 };
 
+// PERSISTENCE
+function saveAppSettings() {
+  const state = {
+    themeRgb: document.documentElement.style.getPropertyValue('--theme-rgb') || '181, 126, 220',
+    showDesktopTitle: document.getElementById('showDesktopTitle')?.checked ?? true,
+    notes: document.querySelector('.os-textarea')?.value || '',
+    musicVolume: polarisAudioVolumeSafe(),
+    sysSettings: sysSettings
+  };
+  localStorage.setItem('polarisAppSettings', JSON.stringify(state));
+}
+document.querySelector('.os-textarea')?.addEventListener('input', saveAppSettings);
+function polarisAudioVolumeSafe() {
+  const el = document.getElementById('polarisAudio');
+  return el ? el.volume : 1;
+}
+
+function loadAppSettings() {
+  const saved = localStorage.getItem('polarisAppSettings');
+  if (!saved) return;
+  let state;
+  try { state = JSON.parse(saved); } catch { return; }
+
+  if (typeof state.musicVolume === 'number') {
+   const audioEl = document.getElementById('polarisAudio');
+   const slider = document.getElementById('volumeSlider');
+   if (audioEl) audioEl.volume = state.musicVolume;
+   if (slider) slider.value = state.musicVolume;
+  }
+
+  if (state.themeRgb) {
+    document.documentElement.style.setProperty('--theme-rgb', state.themeRgb);
+    const picker = document.getElementById('themeColorPicker');
+    if (picker) picker.value = rgbToHex(state.themeRgb);
+  }
+
+  if (typeof state.showDesktopTitle === 'boolean') {
+    const checkbox = document.getElementById('showDesktopTitle');
+    if (checkbox) checkbox.checked = state.showDesktopTitle;
+    const titleEl = document.querySelector('.desktop-title');
+    if (titleEl) titleEl.style.display = state.showDesktopTitle ? 'block' : 'none';
+  }
+
+  if (typeof state.notes === 'string') {
+    const textarea = document.querySelector('.os-textarea');
+    if (textarea) textarea.value = state.notes;
+  }
+
+  if (state.sysSettings) {
+    Object.assign(sysSettings, state.sysSettings);
+    const clockSelect = document.getElementById('clockFormat');
+    if (clockSelect) clockSelect.value = sysSettings.clock24 ? "24" : "12";
+    const termInput = document.getElementById('termUser');
+    if (termInput) termInput.value = sysSettings.termUser;
+    document.getElementById('terminalPrompt').innerText = `${sysSettings.termUser}@polaris:~$`;
+
+    const pCount = document.getElementById('particleCount');
+    if (pCount) { pCount.value = sysSettings.particleCount; document.getElementById('particleCountVal').innerText = sysSettings.particleCount; }
+    const pSpeed = document.getElementById('particleSpeed');
+    if (pSpeed) { pSpeed.value = sysSettings.particleSpeed; document.getElementById('particleSpeedVal').innerText = sysSettings.particleSpeed + 'x'; }
+    const pDist = document.getElementById('particleDist');
+    if (pDist) { pDist.value = sysSettings.particleDist; document.getElementById('particleDistVal').innerText = sysSettings.particleDist; }
+  }
+}
+
+function rgbToHex(rgbString) {
+  const [r, g, b] = rgbString.split(',').map(n => parseInt(n.trim()));
+  return '#' + [r, g, b].map(n => n.toString(16).padStart(2, '0')).join('');
+}
+
 function hexToRgb(hex) {
   let r = parseInt(hex.slice(1, 3), 16),
       g = parseInt(hex.slice(3, 5), 16),
@@ -175,45 +245,50 @@ function hexToRgb(hex) {
 document.getElementById('themeColorPicker')?.addEventListener('input', (e) => {
   document.documentElement.style.setProperty('--theme-rgb', hexToRgb(e.target.value));
   unlockAchievement('painter');
+  saveAppSettings();
 });
 
 document.getElementById('resetColorBtn')?.addEventListener('click', () => {
   document.documentElement.style.setProperty('--theme-rgb', '181, 126, 220');
   document.getElementById('themeColorPicker').value = '#b57edc';
+  saveAppSettings();
 });
 
 document.getElementById('particleCount')?.addEventListener('input', (e) => {
   sysSettings.particleCount = parseInt(e.target.value);
   document.getElementById('particleCountVal').innerText = sysSettings.particleCount;
   initParticles(); 
+  saveAppSettings();
 });
 
 document.getElementById('particleSpeed')?.addEventListener('input', (e) => {
   sysSettings.particleSpeed = parseFloat(e.target.value);
   document.getElementById('particleSpeedVal').innerText = sysSettings.particleSpeed + 'x';
+  saveAppSettings();
 });
 
 document.getElementById('particleDist')?.addEventListener('input', (e) => {
   sysSettings.particleDist = parseInt(e.target.value);
   document.getElementById('particleDistVal').innerText = sysSettings.particleDist;
+  saveAppSettings();
 });
 
 document.getElementById('showDesktopTitle')?.addEventListener('change', (e) => {
   const titleEl = document.querySelector('.desktop-title');
-  if (titleEl) {
-    titleEl.style.display = e.target.checked ? 'block' : 'none';
-  }
+  if (titleEl) titleEl.style.display = e.target.checked ? 'block' : 'none';
+  saveAppSettings();
 });
 
 document.getElementById('clockFormat')?.addEventListener('change', (e) => {
   sysSettings.clock24 = e.target.value === "24";
+  saveAppSettings();
 });
 
 document.getElementById('termUser')?.addEventListener('input', (e) => {
   sysSettings.termUser = e.target.value.trim() || "admin";
   document.getElementById('terminalPrompt').innerText = `${sysSettings.termUser}@polaris:~$`;
+  saveAppSettings();
 });
-
 
 // BACKGROUND CANVAS (SPACE PARTICLES)
 const canvas = document.getElementById("spaceCanvas");
@@ -408,7 +483,7 @@ async function fetchApod() {
     const imgElement = document.getElementById('apodImg');
     const videoBtn = document.getElementById('apodVideoBtn');
     const videoFrame = document.getElementById('apodVideoFrame');
-    
+
     if (data.media_type === "image") {
      imgElement.src = data.url;
      imgElement.loading = "lazy";
@@ -756,6 +831,7 @@ if (volumeSlider) {
     } else {
       muteBtn.innerText = "🔊";
     }
+    saveAppSettings();
   });
 }
 
@@ -913,5 +989,6 @@ function renderAchievements() {
   }).join('');
 }
 renderAchievements();
-
 if (new Date().getHours() >= 0 && new Date().getHours() < 5) unlockAchievement('nightowl');
+loadAppSettings();
+initParticles();
