@@ -41,6 +41,8 @@ A space-themed, web-based operating system interface. Polaris-OS provides a high
 * Fixed issue of projects link not working.
 * Added a higher resolution image for the background.
 * Fixed apps not opening with a single click.
+* Fixed laggy apod issue.
+* Fixed confetti click box issue.
 
 ## Setup and Installation
 
